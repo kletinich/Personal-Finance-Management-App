@@ -7,8 +7,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 
 import com.kletinich.database.DatabaseConnector;
+import com.kletinich.database.TransactionDAO;
+import com.kletinich.database.tables.Transaction;
 
 public class App extends Application {
 
@@ -31,7 +34,11 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
+        //launch();
+
+        //Transaction transaction = new Transaction(0, "Income", 50, 1, new Timestamp(System.currentTimeMillis()), null, null, "Testing income");
+        //TransactionDAO.insertTransaction(transaction);
+        TransactionDAO.deleteTransactionByID(1);
     }
 
 }
