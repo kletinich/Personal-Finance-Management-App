@@ -56,11 +56,11 @@ public abstract class TransactionDAO {
                     System.out.println("Transaction couldn't be inserted!");
                 }
 
-                DatabaseConnector.Disconnect();
-
             } catch (SQLException e) {
                 System.err.println("Error while executing INSERT into transactions!");
             }
+
+            DatabaseConnector.Disconnect();
         }
     }
 
@@ -88,11 +88,65 @@ public abstract class TransactionDAO {
                     System.err.println("Transaction couldn't be deleted!"); 
                 }
 
-                DatabaseConnector.Disconnect();
-
             }catch (SQLException e) {
                 System.err.println("Error while executing DELETE from transactions!");
             }
+
+            DatabaseConnector.Disconnect();
+        }
+    }
+
+    // update a transaction by a given updated transaction
+    public static void  updateTransaction(Transaction transaction){
+        Connection connection = DatabaseConnector.connect();
+
+        if(connection != null){
+            String query = "UPDATE transactions SET " +
+                "type = ?, amount = ?, category_id = ?, date = ?, budget_id = ?, saving_id = ?, note = ?" +
+                " WHERE transaction_id = ?";
+
+            try{
+                PreparedStatement statement = connection.prepareStatement(query);
+
+                statement.setString(1, transaction.getType());
+                statement.setDouble(2, transaction.getAmount());
+                statement.setInt(3, transaction.getCategoryID());
+                statement.setTimestamp(4, transaction.getDate());
+                statement.setString(7, transaction.getNote());
+
+                if(transaction.getBudgetID() == null){
+                    statement.setNull(5, java.sql.Types.INTEGER);
+                }
+    
+                else{
+                    statement.setInt(5, transaction.getBudgetID()); 
+                }
+    
+                if(transaction.getSavingID() == null){
+                    statement.setNull(6, java.sql.Types.INTEGER);
+                }
+    
+                else{
+                    statement.setInt(6, transaction.getSavingID());
+                }
+
+                statement.setInt(8, transaction.getTransactionID());
+
+                int affectedRows = statement.executeUpdate();
+
+                if(affectedRows > 0){
+                    System.out.println("Transaction updated successfully!");
+                }
+    
+                else{
+                    System.err.println("Transaction couldn't be updated!"); 
+                }
+                    
+            }catch(SQLException e){
+                    System.err.println("Error while executing UPDATE in transactions!");
+            }
+
+            DatabaseConnector.Disconnect();
         }
     }
 }

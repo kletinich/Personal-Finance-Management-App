@@ -35,13 +35,19 @@ public class Transaction {
     }
 
     public int getTransactionID() { return transactionID; }
-    public void setTransactionID(int transactionID) { this.transactionID = transactionID; }
+    public void setTransactionID(int transactionID) { this.transactionID = transactionID; } // do i need it?
 
     public String getType() { return type; }
     public void setType(String type) { this.type = type; }
 
     public double getAmount() { return amount; }
-    public void setAmount(double amount) { this.amount = amount; }
+    public void setAmount(double amount) throws IllegalArgumentException{ 
+        if(amount <= 0){
+            throw new IllegalArgumentException("Ammount should be positive");
+        }
+        
+        this.amount = amount; 
+    }
 
     public Integer getCategoryID() { return categoryID; }
     public void setCategoryID(Integer catagoryID) { this.categoryID = catagoryID; }

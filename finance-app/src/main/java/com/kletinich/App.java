@@ -36,9 +36,8 @@ public class App extends Application {
     public static void main(String[] args) {
         //launch();
 
-        //Transaction transaction = new Transaction(0, "Income", 50, 1, new Timestamp(System.currentTimeMillis()), null, null, "Testing income");
-        //TransactionDAO.insertTransaction(transaction);
-        TransactionDAO.deleteTransactionByID(1);
+        Transaction transaction = new Transaction(2, "Income", 50, 1, new Timestamp(System.currentTimeMillis()), null, null, "Testing update");
+        TransactionDAO.updateTransaction(transaction);
     }
 
 }
