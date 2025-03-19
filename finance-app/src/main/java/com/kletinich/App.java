@@ -8,6 +8,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import com.kletinich.database.DatabaseConnector;
+
 public class App extends Application {
 
     private static Scene scene;
