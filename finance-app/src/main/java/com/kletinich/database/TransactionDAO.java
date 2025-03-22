@@ -1,15 +1,173 @@
 package com.kletinich.database;
 
+import java.sql.Timestamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.ArrayList;
+import java.util.List;
 
 import com.kletinich.database.tables.Transaction;
 
 // Data Access Object class for accessing and using queries on transactions table
 public abstract class TransactionDAO {
     private static Connection connection = null;
+
+    // get a transaction by a given id
+    public static Transaction getTransactionByID(int transactionID){
+        connection = DatabaseConnector.connect();
+        Transaction transaction = null;
+
+        // connected successfully
+        if(connection != null){
+            String query = "SELECT * FROM transactions " +
+                "WHERE transaction_id = ?";
+
+            try{
+                PreparedStatement statement = connection.prepareStatement(query);
+
+                statement.setInt(1, transactionID);
+
+                ResultSet result = statement.executeQuery();
+
+                if(result.next()){
+                    Integer budgetID = result.getInt("budget_id");
+                    if(result.wasNull()){
+                        budgetID = null;
+                    }
+
+                    Integer savingID = result.getInt("saving_id");
+                    if(result.wasNull()){
+                        savingID = null;
+                    }
+
+                    transaction = new Transaction(transactionID, 
+                        result.getString("type"), 
+                        result.getDouble("amount"), 
+                        result.getInt("category_id"), 
+                        result.getTimestamp("date"), 
+                        budgetID, 
+                        savingID, 
+                        result.getString("note"));
+                }
+
+                else{
+                    System.out.println("No transaction with id " + transactionID + " was found in transactions!");
+                }
+
+                DatabaseConnector.Disconnect();
+
+            }catch(SQLException e){
+                System.err.println("Error while executing GET from transactions!");
+            }
+        }
+
+        return transaction;
+    }
+
+    // get all transaction that satisfy a given parameters in transaction object
+    // get the transactions by tpye, amount and category id
+    public static List<Transaction> getTransactions(Transaction transaction){
+        List<Transaction> transactions = new ArrayList<>();
+        Connection connection = DatabaseConnector.connect();
+
+        // connected successfully
+        if(connection != null){
+            String query = "SELECT * FROM transactions ";
+
+            String type = null;
+            double amount = 0;
+            Integer categoryID = null;
+
+            if(transaction != null){
+                type = transaction.getType();
+                amount = transaction.getAmount();
+                categoryID = transaction.getCategoryID();
+            }
+
+            int count = 0;
+
+            if(type != null || amount > 0 || categoryID != null){
+                query += "WHERE ";
+
+                if(type != null){
+                    query += "type = ? ";
+                    count++;
+                }
+
+                if(amount > 0){
+                    if(count > 0){
+                        query += "AND ";
+                    }
+
+                    query += "amount = ? "; // to do: add option to <>, not just =
+                    count++;
+                }
+
+                if(categoryID != null){
+                    if(count > 0){
+                        query += "AND ";
+                    }
+
+                    query += "category_id = ?";
+                    count++; 
+                }
+            }
+
+            try{
+                PreparedStatement statement = connection.prepareStatement(query);
+
+                if(type != null){
+                    statement.setString(4 - count, type);
+                    count--;
+                }
+
+                if(amount > 0){
+                    statement.setDouble(4 - count, amount);
+                    count--;
+                }
+
+                if(categoryID != null){
+                    statement.setInt(4 - count, categoryID);
+                }
+
+                ResultSet result = statement.executeQuery();
+
+                while(result.next()){
+                    Integer budgetID = result.getInt("budget_id");
+                    if(result.wasNull()){
+                        budgetID = null;
+                    }
+    
+                    Integer savingID = result.getInt("saving_id");
+                    if(result.wasNull()){
+                        savingID = null;
+                    }
+    
+                    transaction = new Transaction(result.getInt("transaction_id"), 
+                        result.getString("type"), 
+                        result.getDouble("amount"), 
+                        result.getInt("category_id"), 
+                        result.getTimestamp("date"), 
+                        budgetID, 
+                        savingID, 
+                        result.getString("note"));
+
+                    transactions.add(transaction);
+                }   
+
+                DatabaseConnector.Disconnect();
+                
+                }catch(SQLException e){
+                    System.err.println("Error while executing GET from transactions!");
+                
+            }
+        }
+
+        return transactions;
+        
+    }
 
     // insert a new transaction
     public static void insertTransaction(Transaction transaction){

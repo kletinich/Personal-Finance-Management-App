@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.List;
 
 import com.kletinich.database.DatabaseConnector;
 import com.kletinich.database.TransactionDAO;
@@ -34,10 +35,13 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
+        Transaction tr = new Transaction(1, "income", 0, null, null, null, null, 
+        "Another expense");
+        //TransactionDAO.insertTransaction(tr);
+        
         //launch();
-
-        Transaction transaction = new Transaction(2, "Income", 50, 1, new Timestamp(System.currentTimeMillis()), null, null, "Testing update");
-        TransactionDAO.updateTransaction(transaction);
+        List<Transaction> t = TransactionDAO.getTransactions(tr);
+        System.out.println(t);
     }
 
 }
