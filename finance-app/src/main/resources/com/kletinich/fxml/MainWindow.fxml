@@ -58,6 +58,11 @@
       </HBox>
    </bottom>
    <center>
-      <StackPane fx:id="windowsStackPane" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <StackPane fx:id="windowsStackPane" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <fx:include fx:id="transactionWindow" source="transactions/TransactionWindow.fxml"/>
+         <fx:include fx:id="budgetWindow" source="budget/BudgetWindow.fxml"/>
+         <fx:include fx:id="savingWindow" source="saving/SavingWindow.fxml"/>
+         <fx:include fx:id="statisticsWindow" source="statistics/StatisticsWindow.fxml"/>
+      </StackPane>
    </center>
 </BorderPane>
