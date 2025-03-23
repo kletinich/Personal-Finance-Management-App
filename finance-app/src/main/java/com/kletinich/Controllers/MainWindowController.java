@@ -15,6 +15,26 @@ public class MainWindowController {
     @FXML private StackPane windowsStackPane;
 
     @FXML
+    public void switchToTransactions(){
+        System.out.println("Switching to transactions");
+    }
+
+    @FXML
+    public void switchToBudgets(){
+        System.out.println("Switching to budgets");
+    }
+
+    @FXML
+    public void switchToSavings(){
+        System.out.println("Switching to savings");
+    }
+
+    @FXML
+    public void switchToStatistics(){
+        System.out.println("Switching to statistics");
+    }
+    
+    @FXML
     public void exitApp(){
         System.exit(0);
     }

@@ -21,25 +21,25 @@
    <bottom>
       <HBox prefHeight="34.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="transactionButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="120.0" text="Transactions">
+            <Button fx:id="transactionButton" mnemonicParsing="false" onAction="#switchToTransactions" prefHeight="26.0" prefWidth="120.0" text="Transactions">
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" top="5.0" />
                </HBox.margin>
             </Button>
             <Pane prefHeight="35.0" prefWidth="36.0" />
-            <Button fx:id="budgetsButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="86.0" text="Budgets">
+            <Button fx:id="budgetsButton" mnemonicParsing="false" onAction="#switchToBudgets" prefHeight="26.0" prefWidth="86.0" text="Budgets">
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" top="5.0" />
                </HBox.margin>
             </Button>
             <Pane prefHeight="35.0" prefWidth="36.0" />
-            <Button fx:id="savingsButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="Savings">
+            <Button fx:id="savingsButton" mnemonicParsing="false" onAction="#switchToSavings" prefHeight="26.0" prefWidth="92.0" text="Savings">
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" top="5.0" />
                </HBox.margin>
             </Button>
             <Pane prefHeight="35.0" prefWidth="36.0" />
-            <Button fx:id="statisticsButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="Statistics">
+            <Button fx:id="statisticsButton" mnemonicParsing="false" onAction="#switchToStatistics" prefHeight="26.0" prefWidth="96.0" text="Statistics">
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" top="5.0" />
                </HBox.margin>
