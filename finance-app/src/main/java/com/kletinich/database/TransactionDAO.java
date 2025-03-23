@@ -68,7 +68,7 @@ public abstract class TransactionDAO {
 
     // get all transaction that satisfy a given parameters in transaction object
     // get the transactions by tpye, amount and category id
-    public static List<Transaction> getTransactions(Transaction transaction){
+    public static List<Transaction> getTransactions(String type, Double amount, Integer categoryID){
         List<Transaction> transactions = new ArrayList<>();
         Connection connection = DatabaseConnector.connect();
 
@@ -76,19 +76,10 @@ public abstract class TransactionDAO {
         if(connection != null){
             String query = "SELECT * FROM transactions ";
 
-            String type = null;
-            double amount = 0;
-            Integer categoryID = null;
-
-            if(transaction != null){
-                type = transaction.getType();
-                amount = transaction.getAmount();
-                categoryID = transaction.getCategoryID();
-            }
-
             int count = 0;
 
-            if(type != null || amount > 0 || categoryID != null){
+            // add optional where/and keywords to query
+            if(type != null || amount != null || categoryID != null){
                 query += "WHERE ";
 
                 if(type != null){
@@ -96,7 +87,7 @@ public abstract class TransactionDAO {
                     count++;
                 }
 
-                if(amount > 0){
+                if(amount != null){
                     if(count > 0){
                         query += "AND ";
                     }
@@ -110,26 +101,26 @@ public abstract class TransactionDAO {
                         query += "AND ";
                     }
 
-                    query += "category_id = ?";
-                    count++; 
+                    query += "category_id = ?"; 
                 }
             }
 
             try{
                 PreparedStatement statement = connection.prepareStatement(query);
+                int index = 1;
 
                 if(type != null){
-                    statement.setString(4 - count, type);
-                    count--;
+                    statement.setString(index, type);
+                    index++;
                 }
 
-                if(amount > 0){
-                    statement.setDouble(4 - count, amount);
-                    count--;
+                if(amount != null){
+                    statement.setDouble(index, amount);
+                    index++;
                 }
 
                 if(categoryID != null){
-                    statement.setInt(4 - count, categoryID);
+                    statement.setInt(index, categoryID);
                 }
 
                 ResultSet result = statement.executeQuery();
@@ -145,7 +136,7 @@ public abstract class TransactionDAO {
                         savingID = null;
                     }
     
-                    transaction = new Transaction(result.getInt("transaction_id"), 
+                    Transaction transaction = new Transaction(result.getInt("transaction_id"), 
                         result.getString("type"), 
                         result.getDouble("amount"), 
                         result.getInt("category_id"), 

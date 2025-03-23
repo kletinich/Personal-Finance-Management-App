@@ -35,12 +35,8 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        Transaction tr = new Transaction(1, "income", 0, null, null, null, null, 
-        "Another expense");
-        //TransactionDAO.insertTransaction(tr);
-        
         //launch();
-        List<Transaction> t = TransactionDAO.getTransactions(tr);
+        List<Transaction> t = TransactionDAO.getTransactions("income", 500.0, 2);
         System.out.println(t);
     }
 
