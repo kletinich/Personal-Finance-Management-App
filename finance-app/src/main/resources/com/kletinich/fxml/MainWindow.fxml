@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 
-<BorderPane fx:id="mainWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kletinich.Controllers.MainWindowController">
+<BorderPane fx:id="mainWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kletinich.Controllers.MainWindowController">
    <top>
       <HBox prefHeight="18.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
@@ -58,11 +58,11 @@
       </HBox>
    </bottom>
    <center>
-      <StackPane fx:id="windowsStackPane" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <fx:include fx:id="transactionWindow" source="transactions/TransactionWindow.fxml"/>
-         <fx:include fx:id="budgetWindow" source="budget/BudgetWindow.fxml"/>
-         <fx:include fx:id="savingWindow" source="saving/SavingWindow.fxml"/>
-         <fx:include fx:id="statisticsWindow" source="statistics/StatisticsWindow.fxml"/>
+      <StackPane fx:id="windowsStackPane" prefHeight="500.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+         <fx:include fx:id="transactionWindow" source="transactions/TransactionWindow.fxml" />
+         <fx:include fx:id="budgetWindow" source="budget/BudgetWindow.fxml" />
+         <fx:include fx:id="savingWindow" source="saving/SavingWindow.fxml" />
+         <fx:include fx:id="statisticsWindow" source="statistics/StatisticsWindow.fxml" />
       </StackPane>
    </center>
 </BorderPane>

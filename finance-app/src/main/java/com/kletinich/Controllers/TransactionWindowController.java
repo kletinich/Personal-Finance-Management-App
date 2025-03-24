@@ -32,5 +32,10 @@ public class TransactionWindowController {
     @FXML private TableColumn<Transaction, Button> actionsColumn;
 
     @FXML private Button newTransactionButton;
+
+    @FXML
+    public void initialize(){
+        transactionsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+    }
     
 }

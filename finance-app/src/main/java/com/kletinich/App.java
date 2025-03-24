@@ -8,6 +8,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import com.kletinich.database.CategoryDAO;
+
 public class App extends Application {
 
     private static Scene scene;
@@ -29,7 +31,8 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
+        //launch();
+        System.out.println(CategoryDAO.getCategories());
     }
 
 }

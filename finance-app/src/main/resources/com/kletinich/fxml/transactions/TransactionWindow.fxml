@@ -7,11 +7,10 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.AnchorPane?>
-
 
 <AnchorPane fx:id="transactionWindow" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kletinich.Controllers.TransactionWindowController">
    <children>
@@ -47,14 +46,14 @@
                </children>
             </HBox>
             <Pane prefHeight="28.0" prefWidth="600.0" />
-            <TableView fx:id="transactionsTable" prefHeight="252.0">
+            <TableView fx:id="transactionsTable" prefHeight="242.0" prefWidth="687.0" VBox.vgrow="ALWAYS">
               <columns>
                 <TableColumn fx:id="idColumn" minWidth="0.0" prefWidth="26.399993896484375" text="ID" />
                 <TableColumn fx:id="amountColumn" prefWidth="100.0" text="Amount" />
                   <TableColumn fx:id="categoryColumn" prefWidth="100.0" text="Category" />
                   <TableColumn fx:id="dateColumn" prefWidth="75.0" text="Date" />
-                  <TableColumn fx:id="budgetSavingColumn" prefWidth="103.199951171875" text="Budget/Saving" />
-                  <TableColumn fx:id="noteColumn" prefWidth="92.0" text="Note" />
+                  <TableColumn fx:id="budgetSavingColumn" prefWidth="118.4000244140625" text="Budget/Saving" />
+                  <TableColumn fx:id="noteColumn" prefWidth="76.79998779296875" text="Note" />
                   <TableColumn fx:id="actionsColumn" prefWidth="181.0" text="Actions" />
               </columns>
                <VBox.margin>
