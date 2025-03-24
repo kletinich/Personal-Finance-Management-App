@@ -8,12 +8,13 @@ public class Transaction {
     private String type;
     private double amount;
     private Integer categoryID;
+    private String categoryName;
     private Timestamp date;
     private Integer budgetID;
     private Integer savingID;
     private String note;
 
-    public Transaction(Integer transactionID, String type, double amount, Integer categoryID, 
+    public Transaction(Integer transactionID, String type, double amount, Integer categoryID, String categoryName, 
         Timestamp date, Integer budgetID, Integer savingID, String note) throws IllegalArgumentException{
     
         if(categoryID == null){
@@ -28,6 +29,7 @@ public class Transaction {
         this.type = type;
         this.amount = amount;
         this.categoryID = categoryID;
+        this.categoryName = categoryName;
         this.date = date;
         this.budgetID = budgetID;
         this.savingID = savingID;
@@ -51,6 +53,9 @@ public class Transaction {
 
     public Integer getCategoryID() { return categoryID; }
     public void setCategoryID(Integer categoryID) { this.categoryID = categoryID; }
+
+    public String getCategoryName() { return categoryName; }
+    public void setCategoryName(String categoryName) { this.categoryName = categoryName;}
 
     public Timestamp getDate() { return date; }
     public void setDate(Timestamp date) { this.date = date; }
@@ -84,7 +89,7 @@ public class Transaction {
             this.transactionID + ", " +
             this.type + ", " +
             this.amount + ", " +
-            this.categoryID + ", " +
+            this.categoryName + ", " +
             this.date + ", " +
             this.budgetID + ", " +
             this.savingID + ", " +

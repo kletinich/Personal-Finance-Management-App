@@ -1,6 +1,5 @@
 package com.kletinich.database;
 
-import java.sql.Timestamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,8 +20,10 @@ public abstract class TransactionDAO {
 
         // connected successfully
         if(connection != null){
-            String query = "SELECT * FROM transactions " +
-                "WHERE transaction_id = ?";
+            String query = "SELECT t.*, c.name AS category_name " + 
+                            "FROM transactions t " + 
+                            "JOIN categories c ON t.category_id = c.category_id " +
+                            "WHERE transaction_id = ?";
 
             try{
                 PreparedStatement statement = connection.prepareStatement(query);
@@ -46,6 +47,7 @@ public abstract class TransactionDAO {
                         result.getString("type"), 
                         result.getDouble("amount"), 
                         result.getInt("category_id"), 
+                        result.getString("category_name"),
                         result.getTimestamp("date"), 
                         budgetID, 
                         savingID, 
@@ -68,13 +70,15 @@ public abstract class TransactionDAO {
 
     // get all transaction that satisfy a given parameters in transaction object
     // get the transactions by tpye, amount and category id
-    public static List<Transaction> getTransactions(String type, Double amount, Integer categoryID){
+    public static List<Transaction> getTransactions(String type, Double amount, Integer categoryID){ // updating prevoius function - inner join added
         List<Transaction> transactions = new ArrayList<>();
         Connection connection = DatabaseConnector.connect();
 
         // connected successfully
         if(connection != null){
-            String query = "SELECT * FROM transactions ";
+            String query = "SELECT t.*, c.name AS category_name " + 
+                                "FROM transactions t " + 
+                                "JOIN categories c ON t.category_id = c.category_id ";
 
             int count = 0;
 
@@ -140,6 +144,7 @@ public abstract class TransactionDAO {
                         result.getString("type"), 
                         result.getDouble("amount"), 
                         result.getInt("category_id"), 
+                        result.getString("category_name"),
                         result.getTimestamp("date"), 
                         budgetID, 
                         savingID, 
@@ -152,7 +157,6 @@ public abstract class TransactionDAO {
                 
                 }catch(SQLException e){
                     System.err.println("Error while executing GET from transactions!");
-                
             }
         }
 

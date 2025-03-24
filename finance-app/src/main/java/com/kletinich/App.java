@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 import com.kletinich.database.CategoryDAO;
+import com.kletinich.database.TransactionDAO;
 
 public class App extends Application {
 
@@ -32,7 +33,6 @@ public class App extends Application {
 
     public static void main(String[] args) {
         //launch();
-        System.out.println(CategoryDAO.getCategories());
     }
 
 }
