@@ -6,5 +6,6 @@ module com.kletinich {
 
     opens com.kletinich to javafx.fxml;
     opens com.kletinich.Controllers to javafx.fxml;
+    opens com.kletinich.database.tables to javafx.base;
     exports com.kletinich;
 }

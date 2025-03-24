@@ -1,10 +1,13 @@
 package com.kletinich.Controllers;
 
 import java.sql.Timestamp;
+import java.util.List;
 
+import com.kletinich.database.TransactionDAO;
 import com.kletinich.database.tables.Transaction;
 
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -12,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class TransactionWindowController {
 
@@ -36,6 +40,17 @@ public class TransactionWindowController {
     @FXML
     public void initialize(){
         transactionsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        List<Transaction> transactionsList = TransactionDAO.getTransactions(null, null, null);
+        ObservableList<Transaction> transactions = FXCollections.observableArrayList(transactionsList);
+
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("transactionID"));
+        amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("categoryName")); 
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+        noteColumn.setCellValueFactory(new PropertyValueFactory<>("note"));
+
+        transactionsTable.setItems(transactions);
     }
     
 }
