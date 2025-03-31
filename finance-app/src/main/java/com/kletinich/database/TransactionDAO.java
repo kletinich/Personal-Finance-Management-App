@@ -73,7 +73,6 @@ public abstract class TransactionDAO {
     public static List<Transaction> getTransactions(String type, Double amount, Integer categoryID){ // updating prevoius function - inner join added
         List<Transaction> transactions = new ArrayList<>();
         Connection connection = DatabaseConnector.connect();
-
         // connected successfully
         if(connection != null){
             String query = "SELECT t.*, c.name AS category_name " + 
@@ -105,7 +104,7 @@ public abstract class TransactionDAO {
                         query += "AND ";
                     }
 
-                    query += "category_id = ?"; 
+                    query += "t.category_id = ?"; 
                 }
             }
 
@@ -114,17 +113,15 @@ public abstract class TransactionDAO {
                 int index = 1;
 
                 if(type != null){
-                    statement.setString(index, type);
-                    index++;
+                    statement.setString(index++, type);
                 }
 
                 if(amount != null){
-                    statement.setDouble(index, amount);
-                    index++;
+                    statement.setDouble(index++, amount);
                 }
 
                 if(categoryID != null){
-                    statement.setInt(index, categoryID);
+                    statement.setInt(index++, categoryID);
                 }
 
                 ResultSet result = statement.executeQuery();

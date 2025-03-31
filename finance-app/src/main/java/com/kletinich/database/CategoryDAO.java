@@ -34,7 +34,7 @@ public abstract class CategoryDAO {
                 }
 
                 else{
-                    System.out.println("No category with id " + categoryID + " was found in catefories!");
+                    System.out.println("No category with id " + categoryID + " was found in categories!");
                 }
 
                 DatabaseConnector.Disconnect();
@@ -45,6 +45,39 @@ public abstract class CategoryDAO {
         }
 
         return category;
+    }
+
+    public static int getCategoryIDByName(String categoryName){
+        connection = DatabaseConnector.connect();
+        int categoryID = 0;
+
+        //connected successfully
+        if(connection != null){
+            String query = "SELECT category_id FROM categories WHERE name = ?";
+
+            try{
+                PreparedStatement statement = connection.prepareStatement(query);
+
+                statement.setString(1, categoryName);
+
+                ResultSet result = statement.executeQuery();
+
+                if(result.next()){
+                    categoryID = result.getInt("category_id");
+                }
+
+                else{
+                    System.out.println("No category with name " + categoryName + " was found in categories!");
+                }
+
+            }catch(SQLException e){
+                System.err.println("Error while executing GET from categories!");
+            }
+
+            DatabaseConnector.Disconnect();
+        }
+
+        return categoryID;
     }
 
     // get all the categories

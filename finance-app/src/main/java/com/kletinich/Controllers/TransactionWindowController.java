@@ -173,7 +173,22 @@ public class TransactionWindowController {
     }
 
     public void filterButtonPressed(){
-        System.out.println("Filter");
+        String type = typeFilter.getValue();
+        Integer categoryID = null;
+        Double amount = null;
+
+
+        Category selectedCategory = categoryFilter.getValue();
+
+        if(selectedCategory != null){
+            categoryID = selectedCategory.getID();
+        }
+
+        // to do : add amount
+
+        List<Transaction> transactions = TransactionDAO.getTransactions(type, amount, categoryID);
+        transactionsTable.setItems(FXCollections.observableArrayList(transactions));
+        
     }
     
 }
