@@ -177,6 +177,7 @@ public class TransactionWindowController {
         Integer categoryID = null;
         Double amount = null;
 
+        amountTextField.setStyle("");
 
         Category selectedCategory = categoryFilter.getValue();
 
@@ -184,11 +185,28 @@ public class TransactionWindowController {
             categoryID = selectedCategory.getID();
         }
 
-        // to do : add amount
+        String amountString = amountTextField.getText();
+        try{
+            if(amountString != null && !amountString.trim().isEmpty()){
+                amount = Double.parseDouble(amountString);
+            }
+        }catch(NumberFormatException e){
+            amountTextField.setText("Not a valid value!");
+            amountTextField.setStyle("-fx-background-color: red;");
+            return;
+        }
 
         List<Transaction> transactions = TransactionDAO.getTransactions(type, amount, categoryID);
         transactionsTable.setItems(FXCollections.observableArrayList(transactions));
         
     }
+
+    public void resetAmountBox(){
+        amountTextField.setStyle("");
+        amountTextField.setPromptText("Amount");
+        amountTextField.setText("");
+    }
+
+
     
 }
