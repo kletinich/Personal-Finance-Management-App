@@ -137,6 +137,9 @@ public class TransactionWindowController {
             System.out.println("Deleting " + transaction);
             TransactionDAO.deleteTransactionByID(transaction.getTransactionID());
             deleteColumn.getTableView().getItems().remove(transaction);
+
+            totalBalance -= transaction.getAmount();
+            balanceLabel.setText("Total balance: " + String.valueOf(totalBalance));
         }
     }
 
