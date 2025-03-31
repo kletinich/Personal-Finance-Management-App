@@ -56,7 +56,13 @@ public class TransactionWindowController {
         ObservableList<Transaction> transactions = FXCollections.observableArrayList(transactionsList);
 
         for(Transaction t: transactionsList){
-            totalBalance += t.getAmount();
+            if(t.getType().equals("income")){
+                totalBalance += t.getAmount();
+            }
+
+            else{
+                totalBalance -= t.getAmount();
+            }
         }
 
         balanceLabel.setText("Total balance: " + String.valueOf(totalBalance));
@@ -126,7 +132,6 @@ public class TransactionWindowController {
             }
         );
 
-
         transactionsTable.setItems(transactions);
     }
 
@@ -138,7 +143,15 @@ public class TransactionWindowController {
             TransactionDAO.deleteTransactionByID(transaction.getTransactionID());
             deleteColumn.getTableView().getItems().remove(transaction);
 
-            totalBalance -= transaction.getAmount();
+            // update total balance after update
+            if(transaction.getType().equals("income")){
+                totalBalance -= transaction.getAmount();
+            }
+
+            else{
+                totalBalance += transaction.getAmount();
+            }
+
             balanceLabel.setText("Total balance: " + String.valueOf(totalBalance));
         }
     }
