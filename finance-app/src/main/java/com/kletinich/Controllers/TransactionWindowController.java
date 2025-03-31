@@ -54,6 +54,18 @@ public class TransactionWindowController {
 
         actionsColumn.setCellFactory(param -> new TableCell<>(){
             private final Button actionButton = new Button("Delete");
+
+            {
+                actionButton.setOnAction(event -> {
+                    Transaction transaction = getTableView().getItems().get(getIndex());
+
+                    System.out.println("Deleting " + transaction);
+                    TransactionDAO.deleteTransactionByID(transaction.getTransactionID());
+                    getTableView().getItems().remove(transaction);
+                }
+                
+                );
+            }
         
         
             @Override
