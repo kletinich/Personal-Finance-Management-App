@@ -33,12 +33,12 @@
                         <Insets bottom="5.0" left="5.0" top="10.0" />
                      </HBox.margin>
                   </ComboBox>
-                  <TextField fx:id="amountTextField" prefHeight="26.0" prefWidth="106.0" text="Amount ">
+                  <TextField fx:id="amountTextField" prefHeight="26.0" prefWidth="106.0" promptText="Amount">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" top="10.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button fx:id="filterButton" mnemonicParsing="false" text="Filter">
+                  <Button fx:id="filterButton" mnemonicParsing="false" onAction="#filterButtonPressed" text="Filter">
                      <HBox.margin>
                         <Insets bottom="5.0" left="50.0" top="10.0" />
                      </HBox.margin>

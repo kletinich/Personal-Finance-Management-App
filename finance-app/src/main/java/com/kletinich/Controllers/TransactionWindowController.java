@@ -3,7 +3,9 @@ package com.kletinich.Controllers;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.kletinich.database.CategoryDAO;
 import com.kletinich.database.TransactionDAO;
+import com.kletinich.database.tables.Category;
 import com.kletinich.database.tables.Transaction;
 
 import javafx.collections.FXCollections;
@@ -17,10 +19,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.util.Callback;
 
 public class TransactionWindowController {
 
@@ -29,7 +29,7 @@ public class TransactionWindowController {
     @FXML private Label balanceLabel;
 
     @FXML private ComboBox<String> typeFilter;
-    @FXML private ComboBox<String> categoryBox;
+    @FXML private ComboBox<Category> categoryFilter;
     @FXML private TextField amountTextField;
     @FXML private Button filterButton;
 
@@ -133,6 +133,17 @@ public class TransactionWindowController {
         );
 
         transactionsTable.setItems(transactions);
+
+        initFilterOptions();
+    }
+
+    // set the options for the filters
+    public void initFilterOptions(){
+        List<Category> categories = CategoryDAO.getCategories();
+        categoryFilter.setItems(FXCollections.observableList(categories));
+
+        ObservableList<String> types = FXCollections.observableArrayList("income", "expense");
+        typeFilter.setItems(types);
     }
 
     // when a delete button is pressed, delete the transaction associated with the index
@@ -159,6 +170,10 @@ public class TransactionWindowController {
     // when an update button is pressed, update the transaction associated with the index
     public void updateButtonPressed(int index){
         System.out.println("Update");
+    }
+
+    public void filterButtonPressed(){
+        System.out.println("Filter");
     }
     
 }
