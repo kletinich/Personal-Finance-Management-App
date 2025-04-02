@@ -1,6 +1,7 @@
 package com.kletinich.database.tables;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 // Transaction table in the database
 public class Transaction {
