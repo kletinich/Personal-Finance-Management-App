@@ -11,6 +11,9 @@ import com.kletinich.database.tables.Transaction;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -19,6 +22,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
@@ -111,7 +116,8 @@ public class TransactionWindowController {
                 actionButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                        updateButtonPressed(getIndex());
+                        Transaction t = getTableView().getItems().get(getIndex());
+                        updateButtonPressed(t);
                     }
                 });
             }
@@ -167,9 +173,25 @@ public class TransactionWindowController {
         }
     }
 
-    // when an update button is pressed, update the transaction associated with the index
-    public void updateButtonPressed(int index){
-        System.out.println("Update");
+    // when an update button is pressed, open new window for updating the transaction
+    public void updateButtonPressed(Transaction transaction){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/kletinich/fxml/transactions/UpdateTransactionWindow.fxml"));
+            Parent root = loader.load();
+
+            UpdateTransactionWindowController controller = loader.getController();
+            controller.setTransactionData(transaction, typeFilter, categoryFilter);
+
+            Stage updateTransactionStage = new Stage();
+            updateTransactionStage.initModality(Modality.APPLICATION_MODAL);
+            updateTransactionStage.setTitle("Update Transaction");
+            updateTransactionStage.setScene(new Scene(root));
+            updateTransactionStage.showAndWait();
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void filterButtonPressed(){
