@@ -31,7 +31,7 @@ public class UpdateTransactionWindowController {
     @FXML private Button updateButton;
     @FXML private Button cancelButton;
 
-    private Transaction transaction;
+    private static Transaction updatedTransaction;
 
     // display the data of the current selected transaction
     public void setTransactionData(Transaction transaction, ComboBox<String> type, ComboBox<Category> categories){
@@ -60,45 +60,55 @@ public class UpdateTransactionWindowController {
 
         noteTextBox.setText(transaction.getNote());
 
-        this.transaction = transaction;
+        updatedTransaction = transaction;
     }
 
-    public void cancelButtonPressed(){
+    public void closeWindow(){
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
     public void updateButtonPressed(){
+        boolean validData = true;
+
         if(datePicker.getValue() != null){
             LocalDate localDate = datePicker.getValue();
 
             LocalDateTime localDateTime = localDate.atStartOfDay();
-            transaction.setDate(Timestamp.valueOf(localDateTime));
+            updatedTransaction.setDate(Timestamp.valueOf(localDateTime));
         }
 
-        transaction.setType(typeFilter.getValue());
+        updatedTransaction.setType(typeFilter.getValue());
         String amountString = amountTextBox.getText();
         Double amount;
 
         try{
             if(amountString != null && !amountString.trim().isEmpty()){
                 amount = Double.parseDouble(amountString);
-                transaction.setAmount(amount);
+                updatedTransaction.setAmount(amount);
                 amountTextBox.setStyle("");
+                validData = true;
             }
 
         }catch(NumberFormatException e){
             amountTextBox.setText("Not a valid value!");
             amountTextBox.setStyle("-fx-background-color: red;");
+            validData = false;
         }
 
 
-        transaction.setCategoryName(categoryFilter.getValue().toString());
-        transaction.setCategoryID(CategoryDAO.getCategoryIDByName(transaction.getCategoryName()));
-        transaction.setNote(noteTextBox.getText());
+        updatedTransaction.setCategoryName(categoryFilter.getValue().toString());
+        updatedTransaction.setCategoryID(CategoryDAO.getCategoryIDByName(updatedTransaction.getCategoryName()));
+        updatedTransaction.setNote(noteTextBox.getText());
 
         // to do: add budget/saving
+        if(validData){
+            TransactionDAO.updateTransaction(updatedTransaction);
+            closeWindow();
+        }
+    }
 
-        TransactionDAO.updateTransaction(transaction);
+    public static Transaction getUpdatedTransaction(){
+        return updatedTransaction;
     }
 }

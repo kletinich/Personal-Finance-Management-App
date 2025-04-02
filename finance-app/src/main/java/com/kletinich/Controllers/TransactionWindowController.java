@@ -117,7 +117,7 @@ public class TransactionWindowController {
                     @Override
                     public void handle(ActionEvent event) {
                         Transaction t = getTableView().getItems().get(getIndex());
-                        updateButtonPressed(t);
+                        updateButtonPressed(t, getIndex());
                     }
                 });
             }
@@ -174,7 +174,7 @@ public class TransactionWindowController {
     }
 
     // when an update button is pressed, open new window for updating the transaction
-    public void updateButtonPressed(Transaction transaction){
+    public void updateButtonPressed(Transaction transaction, int index){
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/kletinich/fxml/transactions/UpdateTransactionWindow.fxml"));
             Parent root = loader.load();
@@ -187,6 +187,11 @@ public class TransactionWindowController {
             updateTransactionStage.setTitle("Update Transaction");
             updateTransactionStage.setScene(new Scene(root));
             updateTransactionStage.showAndWait();
+
+            Transaction updatedTransaction = UpdateTransactionWindowController.getUpdatedTransaction();
+            
+            transactionsTable.getItems().set(index, updatedTransaction);
+            transactionsTable.refresh();
 
 
         }catch(Exception e){

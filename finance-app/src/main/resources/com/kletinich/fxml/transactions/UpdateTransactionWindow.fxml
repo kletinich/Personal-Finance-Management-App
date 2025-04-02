@@ -71,7 +71,7 @@
                   <Pane prefHeight="26.0" prefWidth="80.0" />
                   <Button fx:id="updateButton" mnemonicParsing="false" onAction="#updateButtonPressed" text="Update" />
                   <Pane prefHeight="26.0" prefWidth="66.0" />
-                  <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelButtonPressed" prefHeight="26.0" prefWidth="70.0" text="Cancel" />
+                  <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#closeWindow" prefHeight="26.0" prefWidth="70.0" text="Cancel" />
                   <Pane prefHeight="26.0" prefWidth="73.0" />
                </children>
                <VBox.margin>
