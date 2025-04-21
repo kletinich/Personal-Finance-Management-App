@@ -7,11 +7,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.security.Timestamp;
-
-import com.kletinich.database.CategoryDAO;
-import com.kletinich.database.TransactionDAO;
-import com.kletinich.database.tables.Transaction;
 
 public class App extends Application {
 
@@ -19,7 +14,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("MainWindow"), 840, 500); 
+        scene = new Scene(loadFXML("MainWindow"), 1100, 600); 
         stage.setScene(scene);
         stage.show();
     }
