@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="transactionWindow" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kletinich.Controllers.TransactionWindowController">
+<AnchorPane fx:id="transactionWindow" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../styles/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kletinich.Controllers.TransactionWindowController">
    <children>
       <VBox layoutY="1.0" prefHeight="400.0" prefWidth="600.0">
          <children>
@@ -23,12 +23,12 @@
                         <Insets bottom="5.0" left="5.0" top="10.0" />
                      </HBox.margin>
                   </Label>
-                  <ComboBox fx:id="typeFilter" prefHeight="26.0" prefWidth="133.0" promptText="Transaction Type">
+                  <ComboBox fx:id="typeFilter" prefHeight="36.0" prefWidth="186.0" promptText="Transaction Type">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" top="10.0" />
                      </HBox.margin>
                   </ComboBox>
-                  <ComboBox fx:id="categoryFilter" prefHeight="26.0" prefWidth="91.0" promptText="Category">
+                  <ComboBox fx:id="categoryFilter" prefHeight="36.0" prefWidth="131.0" promptText="Category">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" top="10.0" />
                      </HBox.margin>
@@ -38,7 +38,7 @@
                         <Insets bottom="5.0" left="5.0" top="10.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button fx:id="filterButton" mnemonicParsing="false" onAction="#filterButtonPressed" text="Filter">
+                  <Button fx:id="filterButton" mnemonicParsing="false" onAction="#filterButtonPressed" prefHeight="28.0" prefWidth="78.0" text="Filter">
                      <HBox.margin>
                         <Insets bottom="5.0" left="50.0" top="10.0" />
                      </HBox.margin>
@@ -46,7 +46,7 @@
                </children>
             </HBox>
             <Pane prefHeight="28.0" prefWidth="600.0" />
-            <TableView fx:id="transactionsTable" prefHeight="242.0" prefWidth="800.0" VBox.vgrow="ALWAYS">
+            <TableView fx:id="transactionsTable" prefHeight="242.0" prefWidth="800.0" stylesheets="@../../styles/style.css" VBox.vgrow="ALWAYS">
               <columns>
                 <TableColumn fx:id="idColumn" minWidth="0.0" prefWidth="26.399993896484375" text="ID" />
                   <TableColumn fx:id="typeColumn" prefWidth="75.0" text="Type" />
@@ -65,7 +65,7 @@
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Pane prefHeight="86.0" prefWidth="228.0" />
-                  <Button fx:id="newTransactionButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#newTransactionButtonPressed" prefHeight="26.0" prefWidth="138.0" text="Add New Transaction">
+                  <Button fx:id="newTransactionButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#newTransactionButtonPressed" prefHeight="28.0" prefWidth="190.0" text="Add New Transaction">
                      <HBox.margin>
                         <Insets top="30.0" />
                      </HBox.margin>

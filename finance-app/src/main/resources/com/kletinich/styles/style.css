@@ -1,0 +1,80 @@
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-background-color: #f5f7fa;
+}
+
+/* Labels */
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333;
+}
+
+/* Text Fields and ComboBoxes */
+.text-field, .combo-box {
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-padding: 5 10;
+    -fx-border-color: #ccc;
+    -fx-background-color: #ffffff;
+}
+
+.text-field:focused, .combo-box:focused {
+    -fx-border-color: #2196F3;
+    -fx-background-color: #ffffff;
+}
+
+/* Buttons */
+.button {
+    -fx-background-radius: 8;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: #4CAF50;
+    -fx-padding: 6 12;
+}
+
+.button:hover {
+    -fx-background-color: #45A049;
+}
+
+#filterButton {
+    -fx-background-color: #4CAF50;
+}
+
+#newTransactionButton {
+    -fx-background-color: #2196F3;
+}
+
+#newTransactionButton:hover {
+    -fx-background-color: #1976D2;
+}
+
+/* TableView */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 5, 0, 0, 2);
+    -fx-table-cell-border-color: transparent;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #eeeeee;
+    -fx-border-color: transparent;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-size: 32px;
+    -fx-border-color: transparent;
+    -fx-alignment: CENTER-LEFT;
+}
+
+.table-view .table-cell {
+    -fx-padding: 8;
+    -fx-text-fill: #333;
+}
+
+/* Pane Spacer */
+.pane {
+    -fx-background-color: transparent;
+}
