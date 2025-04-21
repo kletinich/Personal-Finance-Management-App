@@ -175,6 +175,29 @@ public class TransactionWindowController {
 
     // when an update button is pressed, open new window for updating the transaction
     public void updateButtonPressed(Transaction transaction, int index){
+
+        // load the window and display it
+        loadUpdateTransactionWindow(transaction);
+
+        Transaction updatedTransaction = UpdateTransactionWindowController.getUpdatedTransaction();
+    
+        transactionsTable.getItems().set(index, updatedTransaction);
+        transactionsTable.refresh();
+    }
+
+    // when an insert new transaction button pressed, open new window for inserting the transaction
+    public void newTransactionButtonPressed(){
+        loadUpdateTransactionWindow(null);
+
+        Transaction newTransaction = UpdateTransactionWindowController.getUpdatedTransaction();
+        if(newTransaction.getTransactionID() != -1){
+            transactionsTable.getItems().add(newTransaction);
+            transactionsTable.refresh();
+        }
+    }
+
+    // load and show the update transaction window
+    public void loadUpdateTransactionWindow(Transaction transaction){
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/kletinich/fxml/transactions/UpdateTransactionWindow.fxml"));
             Parent root = loader.load();
@@ -187,18 +210,12 @@ public class TransactionWindowController {
             updateTransactionStage.setTitle("Update Transaction");
             updateTransactionStage.setScene(new Scene(root));
             updateTransactionStage.showAndWait();
-
-            Transaction updatedTransaction = UpdateTransactionWindowController.getUpdatedTransaction();
-            
-            transactionsTable.getItems().set(index, updatedTransaction);
-            transactionsTable.refresh();
-
-
         }catch(Exception e){
-            e.printStackTrace();
+            System.out.println("Error while staging UpdateTransactionWindow!");
         }
     }
 
+    // filter the table rows with relevant filters
     public void filterButtonPressed(){
         String type = typeFilter.getValue();
         Integer categoryID = null;
@@ -228,12 +245,11 @@ public class TransactionWindowController {
         
     }
 
+    // reset the amount box for visual clearity
     public void resetAmountBox(){
         amountTextField.setStyle("");
         amountTextField.setPromptText("Amount");
         amountTextField.setText("");
     }
-
-
-    
+ 
 }

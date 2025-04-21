@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 
 public class UpdateTransactionWindowController {
     @FXML private Label idLabel;
+    @FXML private Label idTitleLabel;
     @FXML private DatePicker datePicker;
     @FXML private ComboBox<String> typeFilter;
     @FXML private TextField amountTextBox;
@@ -32,44 +33,68 @@ public class UpdateTransactionWindowController {
     @FXML private Button cancelButton;
 
     private static Transaction updatedTransaction;
+    private static boolean newTransaction = true;
 
     // display the data of the current selected transaction
     public void setTransactionData(Transaction transaction, ComboBox<String> type, ComboBox<Category> categories){
-        idLabel.setText(String.valueOf(transaction.getTransactionID()));
-        
-        if(transaction.getDate() != null){
-            LocalDate localDate = transaction.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            datePicker.setValue(localDate);
-        }
-
         typeFilter.setItems(type.getItems());
-        typeFilter.setValue(transaction.getType());
-
-        amountTextBox.setText(String.valueOf(transaction.getAmount()));
-
         categoryFilter.setItems(categories.getItems());
-        String categoryName = transaction.getCategoryName();
-        for(Category category : categoryFilter.getItems()){
-            if(category.getName().equals(categoryName)){
-                categoryFilter.setValue(category);
-                break;
-            }
+        
+        if(transaction == null){
+            newTransaction = true;
+            idLabel.setVisible(false);
+            idTitleLabel.setVisible(false);
+
         }
 
-        // to do: add budget/saving view to comboBox
+        else{
+            newTransaction = false;
+            typeFilter.setValue(transaction.getType());
 
-        noteTextBox.setText(transaction.getNote());
+            idLabel.setVisible(true);
+            idTitleLabel.setVisible(true);
 
-        updatedTransaction = transaction;
+            idLabel.setText(String.valueOf(transaction.getTransactionID()));
+            
+            // set the date in the view, if exists. If not, don't display any date
+            if(transaction.getDate() != null){
+                LocalDate localDate = transaction.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                datePicker.setValue(localDate);
+            }
+
+            amountTextBox.setText(String.valueOf(transaction.getAmount()));
+
+            String categoryName = transaction.getCategoryName();
+            for(Category category : categoryFilter.getItems()){
+                if(category.getName().equals(categoryName)){
+                    categoryFilter.setValue(category);
+                    break;
+                }
+            }
+
+            // to do: add budget/saving view to comboBox
+
+            noteTextBox.setText(transaction.getNote());
+
+            updatedTransaction = transaction;
+        }
     }
 
+    // close the window and return to the main transactions view window
     public void closeWindow(){
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
+    // update the data with the new given info
     public void updateButtonPressed(){
         boolean validData = true;
+        String amountString = amountTextBox.getText();
+        Double amount;
+
+        if(updatedTransaction == null){
+            updatedTransaction = new Transaction(null, amountString, 1, 1, amountString, null, null, null, "");
+        }
 
         if(datePicker.getValue() != null){
             LocalDate localDate = datePicker.getValue();
@@ -78,16 +103,28 @@ public class UpdateTransactionWindowController {
             updatedTransaction.setDate(Timestamp.valueOf(localDateTime));
         }
 
-        updatedTransaction.setType(typeFilter.getValue());
-        String amountString = amountTextBox.getText();
-        Double amount;
+        if(typeFilter.getValue() == null){
+            validData = false;
+            // to do: add warning for empty data
+        }
+
+        else{
+            updatedTransaction.setType(typeFilter.getValue());
+        }
 
         try{
             if(amountString != null && !amountString.trim().isEmpty()){
                 amount = Double.parseDouble(amountString);
+                if(amount <= 0){
+                    throw(new NumberFormatException());
+                }
                 updatedTransaction.setAmount(amount);
                 amountTextBox.setStyle("");
                 validData = true;
+            }
+
+            else{
+                throw(new NumberFormatException());
             }
 
         }catch(NumberFormatException e){
@@ -96,14 +133,32 @@ public class UpdateTransactionWindowController {
             validData = false;
         }
 
+        if(categoryFilter.getValue() == null){
+            validData = false;
+        }
 
-        updatedTransaction.setCategoryName(categoryFilter.getValue().toString());
-        updatedTransaction.setCategoryID(CategoryDAO.getCategoryIDByName(updatedTransaction.getCategoryName()));
+        else{
+            updatedTransaction.setCategoryName(categoryFilter.getValue().toString());
+            updatedTransaction.setCategoryID(CategoryDAO.getCategoryIDByName(updatedTransaction.getCategoryName()));
+        }
+
         updatedTransaction.setNote(noteTextBox.getText());
 
         // to do: add budget/saving
+        
         if(validData){
-            TransactionDAO.updateTransaction(updatedTransaction);
+
+            // inserting new transaction
+            if(newTransaction){
+                int generatedID = TransactionDAO.insertTransaction(updatedTransaction);
+                updatedTransaction.setTransactionID(generatedID);
+            }
+
+            // updating existing transaction
+            else{
+                TransactionDAO.updateTransaction(updatedTransaction);
+            }
+            
             closeWindow();
         }
     }

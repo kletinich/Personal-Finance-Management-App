@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.security.Timestamp;
 
 import com.kletinich.database.CategoryDAO;
 import com.kletinich.database.TransactionDAO;
@@ -33,6 +34,8 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
+        //Transaction t = new Transaction(0, "Income", 50, 5, "", null, null, null, STYLESHEET_CASPIAN);
+        //TransactionDAO.insertTransaction(t);
         launch();
     }
 

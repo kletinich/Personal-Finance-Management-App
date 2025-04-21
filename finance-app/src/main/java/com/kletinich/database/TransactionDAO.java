@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -161,8 +162,10 @@ public abstract class TransactionDAO {
         
     }
 
-    // insert a new transaction
-    public static void insertTransaction(Transaction transaction){
+    // insert a new transaction. Return the generated id of the transaction.
+    public static int insertTransaction(Transaction transaction){
+        int generatedID = 0;
+
         connection = DatabaseConnector.connect();
 
         // connected successfully
@@ -172,7 +175,7 @@ public abstract class TransactionDAO {
                 "VALUES ( ?, ?, ?, ?, ?, ?, ?)";
 
             try {
-                PreparedStatement statement = connection.prepareStatement(query);
+                PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
                 statement.setString(1, transaction.getType());
                 statement.setDouble(2, transaction.getAmount());
@@ -200,6 +203,11 @@ public abstract class TransactionDAO {
 
                 if(affectedRows > 0){
                     System.out.println("Transaction inserted successfully!");
+
+                    ResultSet generatedKey = statement.getGeneratedKeys();
+                    if(generatedKey.next()){
+                        generatedID = generatedKey.getInt(1);
+                    }
                 }
 
                 else{
@@ -208,10 +216,13 @@ public abstract class TransactionDAO {
 
             } catch (SQLException e) {
                 System.err.println("Error while executing INSERT into transactions!");
+                return -1;
             }
 
             DatabaseConnector.Disconnect();
         }
+
+        return generatedID;
     }
 
     // delete a transaction by given transaction id

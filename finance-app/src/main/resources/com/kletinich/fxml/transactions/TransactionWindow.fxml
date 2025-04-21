@@ -65,7 +65,7 @@
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Pane prefHeight="86.0" prefWidth="228.0" />
-                  <Button fx:id="newTransactionButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" text="Add New Transaction">
+                  <Button fx:id="newTransactionButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#newTransactionButtonPressed" prefHeight="26.0" prefWidth="138.0" text="Add New Transaction">
                      <HBox.margin>
                         <Insets top="30.0" />
                      </HBox.margin>
