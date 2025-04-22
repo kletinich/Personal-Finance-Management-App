@@ -187,6 +187,7 @@ public class TransactionWindowController {
         transactionsTable.getItems().set(index, updatedTransaction);
         transactionsTable.refresh();
 
+        // update the balance label with the updated values of the updated transaction
         updateBalanceLabel(oldAmount, newAmount, oldType, newType);
 
     }
@@ -275,6 +276,7 @@ public class TransactionWindowController {
         balanceLabel.setText("Total balance: " + String.valueOf(totalBalance));
     }
 
+    // updating the balance label of one transcation
     public void updateBalanceLabel(Double oldValue, Double newValue, String oldType, String newType){
         if(oldValue != null && oldType != null){
             if(oldType.equals("income")){
