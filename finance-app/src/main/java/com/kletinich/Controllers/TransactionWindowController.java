@@ -64,17 +64,7 @@ public class TransactionWindowController {
         List<Transaction> transactionsList = TransactionDAO.getTransactions(null, null, null);
         ObservableList<Transaction> transactions = FXCollections.observableArrayList(transactionsList);
 
-        for(Transaction t: transactionsList){
-            if(t.getType().equals("income")){
-                totalBalance += t.getAmount();
-            }
-
-            else{
-                totalBalance -= t.getAmount();
-            }
-        }
-
-        balanceLabel.setText("Total balance: " + String.valueOf(totalBalance));
+        initBalanceLabel(transactionsList);
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("transactionID"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
@@ -179,12 +169,26 @@ public class TransactionWindowController {
 
     // when an update button is pressed, open new window for updating the transaction
     public void updateButtonPressed(Transaction transaction, int index){
+        Double oldAmount;
+        Double newAmount;
+        String oldType;
+        String newType;
+
+        oldAmount = transaction.getAmount();
+        oldType = transaction.getType();
+
         loadUpdateTransactionWindow(transaction);
 
         Transaction updatedTransaction = controller.getUpdatedTransaction();
+
+        newAmount = updatedTransaction.getAmount();
+        newType = updatedTransaction.getType();
     
         transactionsTable.getItems().set(index, updatedTransaction);
         transactionsTable.refresh();
+
+        updateBalanceLabel(oldAmount, newAmount, oldType, newType);
+
     }
 
     // when an insert new transaction button pressed, open new window for inserting the transaction
@@ -196,6 +200,8 @@ public class TransactionWindowController {
             transactionsTable.getItems().add(newTransaction);
             transactionsTable.refresh();
         }
+
+        updateBalanceLabel(null, newTransaction.getAmount(), null, newTransaction.getType());
     }
 
     // load and show the update transaction window
@@ -252,6 +258,43 @@ public class TransactionWindowController {
         amountTextField.setStyle("");
         amountTextField.setPromptText("Amount");
         amountTextField.setText("");
+    }
+
+    // setting the balance label with the balance calculation of all transactions
+    public void initBalanceLabel(List<Transaction> transactionsList){
+        for(Transaction t: transactionsList){
+            if(t.getType().equals("income")){
+                totalBalance += t.getAmount();
+            }
+
+            else{
+                totalBalance -= t.getAmount();
+            }
+        }
+
+        balanceLabel.setText("Total balance: " + String.valueOf(totalBalance));
+    }
+
+    public void updateBalanceLabel(Double oldValue, Double newValue, String oldType, String newType){
+        if(oldValue != null && oldType != null){
+            if(oldType.equals("income")){
+                totalBalance -= oldValue;
+            }
+
+            else{
+                totalBalance += oldValue;
+            }
+        }
+
+        if(newType.equals("income")){
+            totalBalance += newValue;
+        }
+
+        else{
+            totalBalance -= newValue;
+        }
+
+        balanceLabel.setText("Total balance: " + String.valueOf(totalBalance));
     }
  
 }
