@@ -49,7 +49,7 @@ public abstract class TransactionDAO {
                         result.getDouble("amount"), 
                         result.getInt("category_id"), 
                         result.getString("category_name"),
-                        result.getTimestamp("date"), 
+                        result.getDate("date"), 
                         budgetID, 
                         savingID, 
                         result.getString("note"));
@@ -143,7 +143,7 @@ public abstract class TransactionDAO {
                         result.getDouble("amount"), 
                         result.getInt("category_id"), 
                         result.getString("category_name"),
-                        result.getTimestamp("date"), 
+                        result.getDate("date"), 
                         budgetID, 
                         savingID, 
                         result.getString("note"));
@@ -180,7 +180,7 @@ public abstract class TransactionDAO {
                 statement.setString(1, transaction.getType());
                 statement.setDouble(2, transaction.getAmount());
                 statement.setInt(3, transaction.getCategoryID());
-                statement.setTimestamp(4, transaction.getDate());
+                statement.setDate(4, transaction.getDate());
                 statement.setString(7, transaction.getNote());
 
                 if(transaction.getBudgetID() == null){
@@ -272,7 +272,7 @@ public abstract class TransactionDAO {
                 statement.setString(1, transaction.getType());
                 statement.setDouble(2, transaction.getAmount());
                 statement.setInt(3, transaction.getCategoryID());
-                statement.setTimestamp(4, transaction.getDate());
+                statement.setDate(4, transaction.getDate());
                 statement.setString(7, transaction.getNote());
 
                 if(transaction.getBudgetID() == null){

@@ -1,6 +1,8 @@
 package com.kletinich.Controllers;
 
 import java.sql.Timestamp;
+import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 
 import com.kletinich.database.CategoryDAO;
@@ -43,13 +45,15 @@ public class TransactionWindowController {
     @FXML private TableColumn<Transaction, String> typeColumn;
     @FXML private TableColumn<Transaction, Double> amountColumn;
     @FXML private TableColumn<Transaction, String> categoryColumn;
-    @FXML private TableColumn<Transaction, Timestamp> dateColumn;
+    @FXML private TableColumn<Transaction, Date> dateColumn;
     @FXML private TableColumn<Transaction, String> budgetSavingColumn;
     @FXML private TableColumn<Transaction, String> noteColumn;
     @FXML private TableColumn<Transaction, Button> deleteColumn;
     @FXML private TableColumn<Transaction, Button> updateColumn;
 
     @FXML private Button newTransactionButton;
+
+    UpdateTransactionWindowController controller;
 
     @FXML
     public void initialize(){
@@ -175,11 +179,9 @@ public class TransactionWindowController {
 
     // when an update button is pressed, open new window for updating the transaction
     public void updateButtonPressed(Transaction transaction, int index){
-
-        // load the window and display it
         loadUpdateTransactionWindow(transaction);
 
-        Transaction updatedTransaction = UpdateTransactionWindowController.getUpdatedTransaction();
+        Transaction updatedTransaction = controller.getUpdatedTransaction();
     
         transactionsTable.getItems().set(index, updatedTransaction);
         transactionsTable.refresh();
@@ -189,7 +191,7 @@ public class TransactionWindowController {
     public void newTransactionButtonPressed(){
         loadUpdateTransactionWindow(null);
 
-        Transaction newTransaction = UpdateTransactionWindowController.getUpdatedTransaction();
+        Transaction newTransaction = controller.getUpdatedTransaction();
         if(newTransaction.getTransactionID() != -1){
             transactionsTable.getItems().add(newTransaction);
             transactionsTable.refresh();
@@ -202,7 +204,7 @@ public class TransactionWindowController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/kletinich/fxml/transactions/UpdateTransactionWindow.fxml"));
             Parent root = loader.load();
 
-            UpdateTransactionWindowController controller = loader.getController();
+            controller = loader.getController();
             controller.setTransactionData(transaction, typeFilter, categoryFilter);
 
             Stage updateTransactionStage = new Stage();

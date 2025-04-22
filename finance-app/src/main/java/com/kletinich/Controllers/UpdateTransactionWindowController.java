@@ -2,6 +2,7 @@ package com.kletinich.Controllers;
 
 
 import java.sql.Timestamp;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -32,7 +33,7 @@ public class UpdateTransactionWindowController {
     @FXML private Button updateButton;
     @FXML private Button cancelButton;
 
-    private static Transaction updatedTransaction;
+    private Transaction updatedTransaction;
     private static boolean newTransaction = true;
 
     // display the data of the current selected transaction
@@ -58,7 +59,7 @@ public class UpdateTransactionWindowController {
             
             // set the date in the view, if exists. If not, don't display any date
             if(transaction.getDate() != null){
-                LocalDate localDate = transaction.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDate localDate = transaction.getDate().toLocalDate();
                 datePicker.setValue(localDate);
             }
 
@@ -98,9 +99,7 @@ public class UpdateTransactionWindowController {
 
         if(datePicker.getValue() != null){
             LocalDate localDate = datePicker.getValue();
-
-            LocalDateTime localDateTime = localDate.atStartOfDay();
-            updatedTransaction.setDate(Timestamp.valueOf(localDateTime));
+            updatedTransaction.setDate(Date.valueOf(localDate));
         }
 
         if(typeFilter.getValue() == null){
@@ -163,7 +162,11 @@ public class UpdateTransactionWindowController {
         }
     }
 
-    public static Transaction getUpdatedTransaction(){
+    public Transaction getUpdatedTransaction(){
         return updatedTransaction;
+    }
+
+    public void resetTransaction(){
+        updatedTransaction = null;
     }
 }

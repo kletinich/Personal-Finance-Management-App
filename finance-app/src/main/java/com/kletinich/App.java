@@ -14,7 +14,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("MainWindow"), 1100, 600); 
+        scene = new Scene(loadFXML("MainWindow"), 1230, 600); 
         stage.setScene(scene);
         stage.show();
     }
@@ -29,8 +29,6 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        //Transaction t = new Transaction(0, "Income", 50, 5, "", null, null, null, STYLESHEET_CASPIAN);
-        //TransactionDAO.insertTransaction(t);
         launch();
     }
 

@@ -1,5 +1,6 @@
 package com.kletinich.database.tables;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 
@@ -10,13 +11,13 @@ public class Transaction {
     private double amount;
     private Integer categoryID;
     private String categoryName;
-    private Timestamp date;
+    private Date date;
     private Integer budgetID;
     private Integer savingID;
     private String note;
 
     public Transaction(Integer transactionID, String type, double amount, Integer categoryID, String categoryName, 
-        Timestamp date, Integer budgetID, Integer savingID, String note) throws IllegalArgumentException{
+        Date date, Integer budgetID, Integer savingID, String note) throws IllegalArgumentException{
     
         if(categoryID == null){
             throw new IllegalArgumentException("catagoryID not initialized");
@@ -58,8 +59,8 @@ public class Transaction {
     public String getCategoryName() { return categoryName; }
     public void setCategoryName(String categoryName) { this.categoryName = categoryName;}
 
-    public Timestamp getDate() { return date; }
-    public void setDate(Timestamp date) { this.date = date; }
+    public Date getDate() { return date; }
+    public void setDate(Date date) { this.date = date; }
 
     public Integer getBudgetID() { return budgetID; }
     public void setBudgetID(Integer budgetID) throws IllegalArgumentException{
