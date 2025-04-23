@@ -37,6 +37,7 @@ public class TransactionWindowController {
     @FXML private ComboBox<Category> categoryFilter;
     @FXML private TextField amountTextField;
     @FXML private Button filterButton;
+    @FXML private Button resetFilterButton;
 
     @FXML private TableView<Transaction> transactionsTable;
     @FXML private TableColumn<Transaction, Integer> idColumn;
@@ -252,6 +253,22 @@ public class TransactionWindowController {
         List<Transaction> transactions = TransactionDAO.getTransactions(type, amount, categoryID);
         transactionsTable.setItems(FXCollections.observableArrayList(transactions));
         
+    }
+
+    // reset the filter
+    public void resetFilterButtonPressed(){
+        List<Transaction> transactions = TransactionDAO.getTransactions(null, null, null);
+        transactionsTable.setItems(FXCollections.observableArrayList(transactions));
+        
+        typeFilter.getSelectionModel().clearSelection();
+        categoryFilter.getSelectionModel().clearSelection();
+        amountTextField.clear();
+        
+        typeFilter.setPromptText("Transaction Type");
+        categoryFilter.setPromptText("Category");
+        amountTextField.setPromptText("Amount");
+    
+            
     }
 
     // reset the amount box for visual clearity

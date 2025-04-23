@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="transactionWindow" prefHeight="500" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kletinich.Controllers.TransactionWindowController">
+<AnchorPane fx:id="transactionWindow" prefHeight="400.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kletinich.Controllers.TransactionWindowController">
    <children>
       <VBox layoutY="1.0" prefHeight="500" prefWidth="1200">
          <children>
@@ -42,6 +42,11 @@
                   <Button fx:id="filterButton" mnemonicParsing="false" onAction="#filterButtonPressed" prefHeight="28.0" prefWidth="78.0" text="Filter">
                      <HBox.margin>
                         <Insets bottom="5.0" left="50.0" top="10.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="resetFilterButton" mnemonicParsing="false" onAction="#resetFilterButtonPressed" prefHeight="28.0" prefWidth="78.0" text="Reset ">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="10.0" top="10.0" />
                      </HBox.margin>
                   </Button>
                </children>
