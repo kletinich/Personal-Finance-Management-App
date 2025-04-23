@@ -1,7 +1,5 @@
 package com.kletinich.Controllers;
 
-import java.sql.Timestamp;
-import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
 
@@ -53,7 +51,7 @@ public class TransactionWindowController {
 
     @FXML private Button newTransactionButton;
 
-    UpdateTransactionWindowController controller;
+    UpdateTransactionWindowController updateTransactionWindowControllercontroller;
 
     @FXML
     public void initialize(){
@@ -179,7 +177,7 @@ public class TransactionWindowController {
 
         loadUpdateTransactionWindow(transaction);
 
-        Transaction updatedTransaction = controller.getUpdatedTransaction();
+        Transaction updatedTransaction = updateTransactionWindowControllercontroller.getUpdatedTransaction();
 
         newAmount = updatedTransaction.getAmount();
         newType = updatedTransaction.getType();
@@ -196,7 +194,7 @@ public class TransactionWindowController {
     public void newTransactionButtonPressed(){
         loadUpdateTransactionWindow(null);
 
-        Transaction newTransaction = controller.getUpdatedTransaction();
+        Transaction newTransaction = updateTransactionWindowControllercontroller.getUpdatedTransaction();
         if(newTransaction.getTransactionID() != -1){
             transactionsTable.getItems().add(newTransaction);
             transactionsTable.refresh();
@@ -205,20 +203,21 @@ public class TransactionWindowController {
         updateBalanceLabel(null, newTransaction.getAmount(), null, newTransaction.getType());
     }
 
-    // load and show the update transaction window
+    // load and show the update transaction window for inserting new transaction or updating existing one
     public void loadUpdateTransactionWindow(Transaction transaction){
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/kletinich/fxml/transactions/UpdateTransactionWindow.fxml"));
             Parent root = loader.load();
 
-            controller = loader.getController();
-            controller.setTransactionData(transaction, typeFilter, categoryFilter);
+            updateTransactionWindowControllercontroller = loader.getController();
+            updateTransactionWindowControllercontroller.setTransactionData(transaction, typeFilter, categoryFilter);
 
             Stage updateTransactionStage = new Stage();
             updateTransactionStage.initModality(Modality.APPLICATION_MODAL);
             updateTransactionStage.setTitle("Update Transaction");
             updateTransactionStage.setScene(new Scene(root));
             updateTransactionStage.showAndWait();
+
         }catch(Exception e){
             System.out.println("Error while staging UpdateTransactionWindow!");
         }
@@ -243,6 +242,7 @@ public class TransactionWindowController {
             if(amountString != null && !amountString.trim().isEmpty()){
                 amount = Double.parseDouble(amountString);
             }
+
         }catch(NumberFormatException e){
             amountTextField.setText("Not a valid value!");
             amountTextField.setStyle("-fx-background-color: red;");

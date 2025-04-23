@@ -11,7 +11,7 @@
 
 <BorderPane fx:id="mainWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="1000" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kletinich.Controllers.MainWindowController">
    <top>
-      <HBox prefHeight="18.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <HBox alignment="TOP_CENTER" prefHeight="18.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="40.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true" />
             <Label alignment="CENTER" prefHeight="46.0" prefWidth="554.0" text="Personal Finance App" textAlignment="CENTER" />
@@ -19,7 +19,7 @@
       </HBox>
    </top>
    <bottom>
-      <HBox prefHeight="34.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="34.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="transactionButton" mnemonicParsing="false" onAction="#switchToTransactions" prefHeight="26.0" prefWidth="120.0" text="Transactions">
                <HBox.margin>

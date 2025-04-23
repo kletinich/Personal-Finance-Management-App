@@ -1,7 +1,6 @@
 package com.kletinich.database.tables;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 
 
 // Transaction table in the database
