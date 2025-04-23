@@ -40,7 +40,7 @@ public class TransactionWindowController {
     @FXML private Button resetFilterButton;
 
     @FXML private TableView<Transaction> transactionsTable;
-    @FXML private TableColumn<Transaction, Integer> idColumn;
+    //@FXML private TableColumn<Transaction, Integer> idColumn;
     @FXML private TableColumn<Transaction, String> typeColumn;
     @FXML private TableColumn<Transaction, Double> amountColumn;
     @FXML private TableColumn<Transaction, String> categoryColumn;
@@ -65,7 +65,7 @@ public class TransactionWindowController {
 
         initBalanceLabel(transactionsList);
 
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("transactionID"));
+        //idColumn.setCellValueFactory(new PropertyValueFactory<>("transactionID"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("categoryName")); 

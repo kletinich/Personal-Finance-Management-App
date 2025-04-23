@@ -54,7 +54,6 @@
             <Pane prefHeight="28.0" prefWidth="600.0" />
             <TableView fx:id="transactionsTable" prefHeight="500" prefWidth="800" stylesheets="@../../styles/style.css">
               <columns>
-                <TableColumn fx:id="idColumn" minWidth="0.0" prefWidth="26.399993896484375" text="ID" />
                   <TableColumn fx:id="typeColumn" prefWidth="75.0" text="Type" />
                 <TableColumn fx:id="amountColumn" prefWidth="100.0" text="Amount" />
                   <TableColumn fx:id="categoryColumn" prefWidth="100.0" text="Category" />
