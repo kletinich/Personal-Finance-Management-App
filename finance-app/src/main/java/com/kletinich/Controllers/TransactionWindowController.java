@@ -51,7 +51,7 @@ public class TransactionWindowController {
 
     @FXML private Button newTransactionButton;
 
-    UpdateTransactionWindowController updateTransactionWindowControllercontroller;
+    private UpdateTransactionWindowController updateTransactionWindowController;
 
     @FXML
     public void initialize(){
@@ -147,6 +147,7 @@ public class TransactionWindowController {
     }
 
     // when a delete button is pressed, delete the transaction associated with the index
+    @FXML
     public void deleteButtonPressed(int index){
         double totalBalance = SessionData.getTotalBalance();
 
@@ -172,6 +173,7 @@ public class TransactionWindowController {
     }
 
     // when an update button is pressed, open new window for updating the transaction
+    @FXML
     public void updateButtonPressed(Transaction transaction, int index){
         Double oldAmount;
         Double newAmount;
@@ -183,7 +185,7 @@ public class TransactionWindowController {
 
         loadUpdateTransactionWindow(transaction);
 
-        Transaction updatedTransaction = updateTransactionWindowControllercontroller.getUpdatedTransaction();
+        Transaction updatedTransaction = updateTransactionWindowController.getUpdatedTransaction();
 
         newAmount = updatedTransaction.getAmount();
         newType = updatedTransaction.getType();
@@ -197,10 +199,11 @@ public class TransactionWindowController {
     }
 
     // when an insert new transaction button pressed, open new window for inserting the transaction
+    @FXML
     public void newTransactionButtonPressed(){
         loadUpdateTransactionWindow(null);
 
-        Transaction newTransaction = updateTransactionWindowControllercontroller.getUpdatedTransaction();
+        Transaction newTransaction = updateTransactionWindowController.getUpdatedTransaction();
         if(newTransaction.getTransactionID() != -1){
             transactionsTable.getItems().add(newTransaction);
             transactionsTable.refresh();
@@ -215,8 +218,8 @@ public class TransactionWindowController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/kletinich/fxml/transactions/UpdateTransactionWindow.fxml"));
             Parent root = loader.load();
 
-            updateTransactionWindowControllercontroller = loader.getController();
-            updateTransactionWindowControllercontroller.setTransactionData(transaction, typeFilter, categoryFilter);
+            updateTransactionWindowController = loader.getController();
+            updateTransactionWindowController.setTransactionData(transaction, typeFilter, categoryFilter);
 
             Stage updateTransactionStage = new Stage();
             updateTransactionStage.initModality(Modality.APPLICATION_MODAL);
@@ -230,6 +233,7 @@ public class TransactionWindowController {
     }
 
     // filter the table rows with relevant filters
+    @FXML
     public void filterButtonPressed(){
         String type = typeFilter.getValue();
         Integer categoryID = null;
@@ -261,6 +265,7 @@ public class TransactionWindowController {
     }
 
     // reset the filter
+    @FXML
     public void resetFilterButtonPressed(){
         List<Transaction> transactions = SessionData.getTransactionsList();
         transactionsTable.setItems(FXCollections.observableArrayList(transactions));

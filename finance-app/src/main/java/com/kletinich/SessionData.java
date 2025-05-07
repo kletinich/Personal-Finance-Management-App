@@ -38,7 +38,6 @@ public class SessionData {
         return categoriesList;
     }
 
-
     public static void setTotalBalance(double newBalance){
         totalBalance = newBalance;
     }

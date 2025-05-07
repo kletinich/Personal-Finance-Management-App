@@ -47,6 +47,7 @@ public abstract class CategoryDAO {
         return category;
     }
 
+    // get a category id by a given name
     public static int getCategoryIDByName(String categoryName){
         connection = DatabaseConnector.connect();
         int categoryID = 0;

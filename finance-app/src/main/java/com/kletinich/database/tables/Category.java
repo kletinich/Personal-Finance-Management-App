@@ -15,7 +15,5 @@ public class Category {
     public String getName() { return this.name; }
     public void setName(String name) { this.name = name; }
 
-    public String toString(){
-        return name;
-    }
+    public String toString(){ return name; }
 }

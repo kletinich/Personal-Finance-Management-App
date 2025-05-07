@@ -79,12 +79,14 @@ public class UpdateTransactionWindowController {
     }
 
     // close the window and return to the main transactions view window
+    @FXML
     public void closeWindow(){
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
     // update the data with the new given info
+    @FXML
     public void updateButtonPressed(){
         boolean validData = true;
         String amountString = amountTextBox.getText();
