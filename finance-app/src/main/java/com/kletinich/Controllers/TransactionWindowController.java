@@ -139,6 +139,7 @@ public class TransactionWindowController {
     // set the options for the filters
     public void initFilterOptions(){
         List<Category> categories = CategoryDAO.getCategories();
+        SessionData.setCategoriesList(categories);
         categoryFilter.setItems(FXCollections.observableList(categories));
 
         ObservableList<String> types = FXCollections.observableArrayList("income", "expense");
@@ -254,8 +255,8 @@ public class TransactionWindowController {
             return;
         }
 
-        List<Transaction> transactions = TransactionDAO.getTransactions(type, amount, categoryID);
-        transactionsTable.setItems(FXCollections.observableArrayList(transactions));
+        List<Transaction> filteredTransactions = TransactionDAO.getTransactions(type, amount, categoryID);
+        transactionsTable.setItems(FXCollections.observableArrayList(filteredTransactions));
         
     }
 
