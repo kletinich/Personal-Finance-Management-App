@@ -8,15 +8,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-import com.kletinich.database.DatabaseConnector;
-
 public class App extends Application {
 
     private static Scene scene;
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("MainWindow"), 640, 480); 
+        scene = new Scene(loadFXML("MainWindow"), 1230, 600); 
         stage.setScene(scene);
         stage.show();
     }
@@ -26,7 +24,7 @@ public class App extends Application {
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/com/kletinich/fxml/MainWindow.fxml"));
         return fxmlLoader.load();
     }
 
