@@ -23,6 +23,7 @@ public class MainWindowController {
     @FXML
     public void initialize(){
         hideAllWindows();
+        transactionWindow.setVisible(true);
     }
 
     private void hideAllWindows(){

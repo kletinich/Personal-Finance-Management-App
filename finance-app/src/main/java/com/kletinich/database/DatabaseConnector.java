@@ -26,6 +26,7 @@ public abstract class DatabaseConnector {
 
         }catch(SQLException e){
             System.err.println("Failed to connect to database!");
+            System.out.println(e);
             return null;
         }
     }
