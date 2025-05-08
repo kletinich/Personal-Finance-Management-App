@@ -162,6 +162,22 @@ public abstract class TransactionDAO {
         
     }
 
+
+    // replace the getTransactions for the update
+    public static List<Transaction> getTransactions2(String type, Double amount, Integer categoryID){
+        List<Transaction> transactions = new ArrayList<>();
+        Connection connection = DatabaseConnector.connect();
+
+        
+
+        return transactions;
+    }
+
+
+
+
+
+
     // insert a new transaction. Return the generated id of the transaction.
     public static int insertTransaction(Transaction transaction){
         int generatedID = 0;
