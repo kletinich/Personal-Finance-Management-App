@@ -44,7 +44,7 @@ public abstract class Transaction2 {
     public String toString(){
         return "(ID=" + this.transactionID + 
                 ", amount=" + this.amount +
-                ", category='" + this.category.getName() + "'" +
+                ", category='" + this.category + "'" +
                 ", date='" + this.date + "'" +
                 ", note='" + this.note + "')";
     }
@@ -52,7 +52,7 @@ public abstract class Transaction2 {
     // get the type from the derived classes - income or expense
     public abstract String getType();
 
-    // is a planning (income can be part of saving, expense can be part of budget)
+    // is a planning (income can be part of saving, expense can be part of budget) - to be done in future versions
     public abstract boolean isPlanning();
 
 }

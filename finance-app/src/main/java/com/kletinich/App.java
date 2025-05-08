@@ -8,6 +8,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import com.kletinich.database.tables.Expense;
+import com.kletinich.database.tables.Income;
+import com.kletinich.database.tables.Transaction2;
+
 public class App extends Application {
 
     private static Scene scene;
