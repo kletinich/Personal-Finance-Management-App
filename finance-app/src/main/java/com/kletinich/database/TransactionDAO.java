@@ -168,10 +168,15 @@ public abstract class TransactionDAO {
         List<Transaction> transactions = new ArrayList<>();
         Connection connection = DatabaseConnector.connect();
 
-        
+        // connected successfully
+        if(connection != null){
 
+        }
+            
+        
         return transactions;
     }
+    
 
 
 
