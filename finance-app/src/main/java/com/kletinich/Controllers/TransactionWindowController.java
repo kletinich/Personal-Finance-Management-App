@@ -39,7 +39,6 @@ public class TransactionWindowController {
     @FXML private Button resetFilterButton;
 
     @FXML private TableView<Transaction> transactionsTable;
-    //@FXML private TableColumn<Transaction, Integer> idColumn;
     @FXML private TableColumn<Transaction, String> typeColumn;
     @FXML private TableColumn<Transaction, Double> amountColumn;
     @FXML private TableColumn<Transaction, String> categoryColumn;
