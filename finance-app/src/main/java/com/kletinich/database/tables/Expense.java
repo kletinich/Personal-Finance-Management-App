@@ -1,7 +1,17 @@
 package com.kletinich.database.tables;
 
+import java.sql.Date;
+
 public class Expense extends Transaction2{
     // to do - add functions and variables for budgets in future versions.
+
+    public Expense(){
+        super();
+    }
+
+    public Expense(Integer transactionID, double amount, Category category, Date date, String note){
+        super(transactionID, amount, category, date, note);
+    }
 
     @Override
     public String getType() {

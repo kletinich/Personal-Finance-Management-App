@@ -1,7 +1,17 @@
 package com.kletinich.database.tables;
 
+import java.sql.Date;
+
 public class Income extends Transaction2{
     // to do - add functions and variables for savings in future versions.
+
+    public Income(){
+        super();
+    }
+
+    public Income(Integer transactionID, double amount, Category category, Date date, String note){
+        super(transactionID, amount, category, date, note);
+    }
 
     @Override
     public String getType() {
