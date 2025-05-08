@@ -7,6 +7,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
+
+import com.kletinich.database.TransactionDAO;
+import com.kletinich.database.tables.Transaction2;
 
 public class App extends Application {
 

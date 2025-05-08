@@ -12,7 +12,6 @@ public abstract class Transaction2 {
     public Transaction2(){
         this.transactionID = null;
         this.amount = 0;
-        this.category = null;
         this.date = null;
         this.note = null;
     }
@@ -29,10 +28,19 @@ public abstract class Transaction2 {
     public Integer getTransactionID() { return transactionID; }
     public void setTransactionID(Integer transactionID) { this.transactionID = transactionID; }
 
+    public double getAmount() { return amount;}
+    public void setAmount(double amount) { this.amount = amount; }
+
     public Category getCategory() { return this.category; }
     public void setCategory(Category category){
-        this.category.setID(category.getID());
-        this.category.setName(category.getName());
+        if(this.category == null){
+            this.category = new Category(category.getID(), category.getName());
+        }
+
+        else{
+            this.category.setID(category.getID());
+            this.category.setName(category.getName());
+        }
     }
 
     public Date getDate() { return date; }

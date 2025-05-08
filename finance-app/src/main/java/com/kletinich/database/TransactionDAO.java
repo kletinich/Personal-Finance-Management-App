@@ -8,7 +8,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.kletinich.database.tables.Category;
+import com.kletinich.database.tables.Expense;
+import com.kletinich.database.tables.Income;
 import com.kletinich.database.tables.Transaction;
+import com.kletinich.database.tables.Transaction2;
 
 // Data Access Object class for accessing and using queries on transactions table
 public abstract class TransactionDAO {
@@ -163,19 +167,96 @@ public abstract class TransactionDAO {
     }
 
 
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     // replace the getTransactions for the update
-    public static List<Transaction> getTransactions2(String type, Double amount, Integer categoryID){
-        List<Transaction> transactions = new ArrayList<>();
+    public static List<Transaction2> getTransactions2(String type, Double amount, Integer categoryID){
+        List<Transaction2> transactions = new ArrayList<>();
         Connection connection = DatabaseConnector.connect();
 
         // connected successfully
         if(connection != null){
+            String query = "SELECT t.*, c.name AS category_name " + 
+            "FROM transactions2 t " + 
+            "JOIN categories c ON t.category_id = c.category_id ";
 
+            int count = 0;
+
+            // add optional where/and keywords to query
+            if(type != null || amount != null || categoryID != null){
+                query += "WHERE ";
+
+                if(type != null){
+                    query += "type = ? ";
+                    count++;
+                }
+
+                if(amount != null){
+                    if(count > 0){
+                        query += "AND ";
+                    }
+
+                    query += "amount = ? "; // to do: add option to <>, not just =
+                    count++;
+                }
+
+                if(categoryID != null){
+                    if(count > 0){
+                        query += "AND ";
+                    }
+
+                    query += "t.category_id = ?"; 
+                }
+            }
+
+            try{
+                PreparedStatement statement = connection.prepareStatement(query);
+                int index = 1;
+
+                if(type != null){
+                    statement.setString(index++, type);
+                }
+
+                if(amount != null){
+                    statement.setDouble(index++, amount);
+                }
+
+                if(categoryID != null){
+                    statement.setInt(index++, categoryID);
+                }
+
+                ResultSet result = statement.executeQuery();
+
+                while(result.next()){
+                    Transaction2 transaction;
+                    String returnedType = result.getString("type");
+
+                    if(returnedType.equals("income")){
+                        transaction = new Income();
+                    }
+
+                    else{
+                        transaction = new Expense();
+                    }
+
+                    transaction.setTransactionID(result.getInt("transaction_id"));
+                    transaction.setAmount(result.getDouble("amount"));
+                    transaction.setCategory(new Category(result.getInt("category_id"), result.getString("category_name")));
+                    transaction.setDate(result.getDate("date"));
+                    transaction.setNote(result.getString("note"));
+
+                    transactions.add(transaction);
+                }
+
+            }catch(SQLException e){
+                System.err.println("Error while executing GET from transactions2!");
+            } 
+            
         }
             
-        
+        DatabaseConnector.Disconnect();
         return transactions;
     }
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     
 
 

@@ -42,6 +42,8 @@ public class TransactionWindowController2 {
         SessionData.setTotalBalance(0);
 
         transactionsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        
     }
 
 }
