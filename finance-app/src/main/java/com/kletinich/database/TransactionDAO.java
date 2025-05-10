@@ -19,14 +19,14 @@ public abstract class TransactionDAO {
     private static Connection connection = null;
 
     // get a transaction by a given id
-    public static Transaction getTransactionByID(int transactionID){
+    public static Transaction2 getTransactionByID(int transactionID){
         connection = DatabaseConnector.connect();
-        Transaction transaction = null;
+        Transaction2 transaction = null;
 
         // connected successfully
         if(connection != null){
             String query = "SELECT t.*, c.name AS category_name " + 
-                            "FROM transactions t " + 
+                            "FROM transactions2 t " + 
                             "JOIN categories c ON t.category_id = c.category_id " +
                             "WHERE transaction_id = ?";
 
@@ -38,25 +38,22 @@ public abstract class TransactionDAO {
                 ResultSet result = statement.executeQuery();
 
                 if(result.next()){
-                    Integer budgetID = result.getInt("budget_id");
-                    if(result.wasNull()){
-                        budgetID = null;
+                    String type = result.getString("type");
+
+                    if(type.equals("income")){
+                        transaction = new Income();
                     }
 
-                    Integer savingID = result.getInt("saving_id");
-                    if(result.wasNull()){
-                        savingID = null;
+                    else{
+                        transaction = new Expense();
                     }
+                    transaction.setAmount(result.getDouble("amount"));
+                    transaction.setDate(result.getDate("date"));
+                    transaction.setNote(result.getString("note"));
 
-                    transaction = new Transaction(transactionID, 
-                        result.getString("type"), 
-                        result.getDouble("amount"), 
-                        result.getInt("category_id"), 
-                        result.getString("category_name"),
-                        result.getDate("date"), 
-                        budgetID, 
-                        savingID, 
-                        result.getString("note"));
+                    int categoryID = result.getInt("category_id");
+                    Category category = CategoryDAO.getCategoryByID(categoryID);
+                    transaction.setCategory(category);
                 }
 
                 else{
