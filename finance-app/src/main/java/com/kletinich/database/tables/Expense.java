@@ -2,7 +2,7 @@ package com.kletinich.database.tables;
 
 import java.sql.Date;
 
-public class Expense extends Transaction2{
+public class Expense extends Transaction{
     // to do - add functions and variables for budgets in future versions.
 
     public Expense(){

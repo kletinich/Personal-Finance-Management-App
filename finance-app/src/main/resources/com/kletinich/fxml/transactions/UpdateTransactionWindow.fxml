@@ -52,7 +52,7 @@
                   <Label text="Amount:" GridPane.rowIndex="3" />
                   <Label prefHeight="18.0" prefWidth="92.0" text="Category:" GridPane.rowIndex="4" />
                   <Label text="Note:" GridPane.rowIndex="6" />
-                  <TextField fx:id="amountTextBox" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="amountTextBox" onMouseClicked="#resetAmountBox" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <ComboBox fx:id="categoryFilter" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <TextArea fx:id="noteTextBox" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                </children>

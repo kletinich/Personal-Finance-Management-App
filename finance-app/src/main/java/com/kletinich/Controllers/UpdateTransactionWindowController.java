@@ -7,7 +7,7 @@ import com.kletinich.database.TransactionDAO;
 import com.kletinich.database.tables.Category;
 import com.kletinich.database.tables.Expense;
 import com.kletinich.database.tables.Income;
-import com.kletinich.database.tables.Transaction2;
+import com.kletinich.database.tables.Transaction;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -30,11 +30,11 @@ public class UpdateTransactionWindowController {
     @FXML private Button updateButton;
     @FXML private Button cancelButton;
 
-    private Transaction2 updatedTransaction;
+    private Transaction updatedTransaction;
     private static boolean newTransaction = true;
 
     // display the data of the current selected transaction
-    public void setTransactionData(Transaction2 transaction, ComboBox<String> type, ComboBox<Category> categories){
+    public void setTransactionData(Transaction transaction, ComboBox<String> type, ComboBox<Category> categories){
         typeFilter.setItems(type.getItems());
         categoryFilter.setItems(categories.getItems());
         if(transaction == null){
@@ -182,11 +182,19 @@ public class UpdateTransactionWindowController {
         }
     }
 
-    public Transaction2 getUpdatedTransaction(){
+    public Transaction getUpdatedTransaction(){
         return updatedTransaction;
     }
 
     public void resetTransaction(){
         updatedTransaction = null;
+    }
+
+    @FXML
+    public void resetAmountBox(){
+        if(amountTextBox.getStyle().contains("-fx-background-color: red;")){
+            amountTextBox.setText("");
+            amountTextBox.setStyle("");
+        }
     }
 }

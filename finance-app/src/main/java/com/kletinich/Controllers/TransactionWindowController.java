@@ -4,12 +4,10 @@ import java.sql.Date;
 import java.util.List;
 
 import com.kletinich.SessionData;
-import com.kletinich.SessionData2;
 import com.kletinich.database.CategoryDAO;
 import com.kletinich.database.TransactionDAO;
 import com.kletinich.database.tables.Category;
 import com.kletinich.database.tables.Transaction;
-import com.kletinich.database.tables.Transaction2;
 
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -40,14 +38,14 @@ public class TransactionWindowController {
     @FXML private Button filterButton;
     @FXML private Button resetFilterButton;
 
-    @FXML private TableView<Transaction2> transactionsTable;
-    @FXML private TableColumn<Transaction2, String> typeColumn;
-    @FXML private TableColumn<Transaction2, Double> amountColumn;
-    @FXML private TableColumn<Transaction2, String> categoryColumn;
-    @FXML private TableColumn<Transaction2, Date> dateColumn;
-    @FXML private TableColumn<Transaction2, String> noteColumn;
-    @FXML private TableColumn<Transaction2, Button> deleteColumn;
-    @FXML private TableColumn<Transaction2, Button> updateColumn;
+    @FXML private TableView<Transaction> transactionsTable;
+    @FXML private TableColumn<Transaction, String> typeColumn;
+    @FXML private TableColumn<Transaction, Double> amountColumn;
+    @FXML private TableColumn<Transaction, String> categoryColumn;
+    @FXML private TableColumn<Transaction, Date> dateColumn;
+    @FXML private TableColumn<Transaction, String> noteColumn;
+    @FXML private TableColumn<Transaction, Button> deleteColumn;
+    @FXML private TableColumn<Transaction, Button> updateColumn;
 
     @FXML private Button newTransactionButton;
 
@@ -60,9 +58,9 @@ public class TransactionWindowController {
 
         transactionsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        List<Transaction2> transactionsList = TransactionDAO.getTransactions(null, null, null);
-        SessionData2.setTransactions(transactionsList);
-        ObservableList<Transaction2> transactions = FXCollections.observableArrayList(transactionsList);
+        List<Transaction> transactionsList = TransactionDAO.getTransactions(null, null, null);
+        SessionData.setTransactions(transactionsList);
+        ObservableList<Transaction> transactions = FXCollections.observableArrayList(transactionsList);
 
         initBalanceLabel(transactionsList);
 
@@ -118,7 +116,7 @@ public class TransactionWindowController {
                 actionButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                        Transaction2 t = getTableView().getItems().get(getIndex());
+                        Transaction t = getTableView().getItems().get(getIndex());
                         updateButtonPressed(t, getIndex());
                     }
                 });
@@ -148,7 +146,7 @@ public class TransactionWindowController {
     // set the options for the filters
     public void initFilterOptions(){
         List<Category> categories = CategoryDAO.getCategories();
-        SessionData2.setCategoriesList(categories);
+        SessionData.setCategoriesList(categories);
         categoryFilter.setItems(FXCollections.observableList(categories));
 
         ObservableList<String> types = FXCollections.observableArrayList("income", "expense");
@@ -158,10 +156,10 @@ public class TransactionWindowController {
     // when a delete button is pressed, delete the transaction associated with the index
     @FXML
     public void deleteButtonPressed(int index){
-        double totalBalance = SessionData2.getTotalBalance();
+        double totalBalance = SessionData.getTotalBalance();
 
         if(index >= 0){
-            Transaction2 transaction = deleteColumn.getTableView().getItems().get(index);
+            Transaction transaction = deleteColumn.getTableView().getItems().get(index);
             System.out.println("Deleting " + transaction);
             TransactionDAO.deleteTransactionByID(transaction.getTransactionID());
             deleteColumn.getTableView().getItems().remove(transaction);
@@ -176,13 +174,13 @@ public class TransactionWindowController {
             }
 
             balanceLabel.setText("Total balance: " + String.valueOf(totalBalance));
-            SessionData2.deleteTransaction(transaction);
-            SessionData2.setTotalBalance(totalBalance);
+            SessionData.deleteTransaction(transaction);
+            SessionData.setTotalBalance(totalBalance);
         }
     }
 
     // when an update button is pressed, start the update procedure
-    public void updateButtonPressed(Transaction2 transaction, int index){
+    public void updateButtonPressed(Transaction transaction, int index){
         Double oldAmount;
         Double newAmount;
         String oldType;
@@ -193,7 +191,7 @@ public class TransactionWindowController {
 
         loadUpdateTransactionWindow(transaction);
 
-        Transaction2 updatedTransaction = updateTransactionWindowController.getUpdatedTransaction();
+        Transaction updatedTransaction = updateTransactionWindowController.getUpdatedTransaction();
 
         newAmount = updatedTransaction.getAmount();
         newType = updatedTransaction.getType();
@@ -210,7 +208,7 @@ public class TransactionWindowController {
     public void newTransactionButtonPressed(){
         loadUpdateTransactionWindow(null);
 
-        Transaction2 newTransaction = updateTransactionWindowController.getUpdatedTransaction();
+        Transaction newTransaction = updateTransactionWindowController.getUpdatedTransaction();
 
         if(newTransaction != null && newTransaction.getTransactionID() != -1){
             transactionsTable.getItems().add(newTransaction);
@@ -221,7 +219,7 @@ public class TransactionWindowController {
     }
 
     // load th window that handles inserting / updating transactions
-    public void loadUpdateTransactionWindow(Transaction2 transaction){
+    public void loadUpdateTransactionWindow(Transaction transaction){
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/kletinich/fxml/transactions/UpdateTransactionWindow.fxml"));
             Parent root = loader.load();
@@ -268,14 +266,14 @@ public class TransactionWindowController {
             return;
         }
 
-        List<Transaction2> filteredTransactions = TransactionDAO.getTransactions(type, amount, categoryID);
+        List<Transaction> filteredTransactions = TransactionDAO.getTransactions(type, amount, categoryID);
         transactionsTable.setItems(FXCollections.observableArrayList(filteredTransactions));
     }
 
     // reset the filter and display all the transactions of the table
     @FXML
     public void resetFilterButtonPressed(){
-        List<Transaction2> transactions = SessionData2.getTransactionsList();
+        List<Transaction> transactions = SessionData.getTransactionsList();
         transactionsTable.setItems(FXCollections.observableArrayList(transactions));
         
         typeFilter.getSelectionModel().clearSelection();
@@ -295,10 +293,10 @@ public class TransactionWindowController {
     }
 
     // setting the balance label with the balance calculation of all transactions
-    public void initBalanceLabel(List<Transaction2> transactionsList){
-        double totalBalance = SessionData2.getTotalBalance();
+    public void initBalanceLabel(List<Transaction> transactionsList){
+        double totalBalance = SessionData.getTotalBalance();
 
-        for(Transaction2 t: transactionsList){
+        for(Transaction t: transactionsList){
             if(t.getType().equals("income")){
                 totalBalance += t.getAmount();
             }
@@ -309,12 +307,12 @@ public class TransactionWindowController {
         }
 
         balanceLabel.setText("Total balance: " + String.valueOf(totalBalance));
-        SessionData2.setTotalBalance(totalBalance);
+        SessionData.setTotalBalance(totalBalance);
     }
 
     // updating the balance label of one transcation
     public void updateBalanceLabel(Double oldValue, Double newValue, String oldType, String newType){
-        double totalBalance = SessionData2.getTotalBalance();
+        double totalBalance = SessionData.getTotalBalance();
 
         if(oldValue != null && oldType != null){
             if(oldType.equals("income")){
@@ -335,7 +333,7 @@ public class TransactionWindowController {
         }
 
         balanceLabel.setText("Total balance: " + String.valueOf(totalBalance));
-        SessionData2.setTotalBalance(totalBalance);
+        SessionData.setTotalBalance(totalBalance);
     }
 
 }

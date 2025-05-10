@@ -12,16 +12,15 @@ import com.kletinich.database.tables.Category;
 import com.kletinich.database.tables.Expense;
 import com.kletinich.database.tables.Income;
 import com.kletinich.database.tables.Transaction;
-import com.kletinich.database.tables.Transaction2;
 
 // Data Access Object class for accessing and using queries on transactions table
 public abstract class TransactionDAO {
     private static Connection connection = null;
 
     // get a transaction by a given id
-    public static Transaction2 getTransactionByID(int transactionID){
+    public static Transaction getTransactionByID(int transactionID){
         connection = DatabaseConnector.connect();
-        Transaction2 transaction = null;
+        Transaction transaction = null;
 
         // connected successfully
         if(connection != null){
@@ -71,8 +70,8 @@ public abstract class TransactionDAO {
     }
 
     // replace the getTransactions for the update
-    public static List<Transaction2> getTransactions(String type, Double amount, Integer categoryID){
-        List<Transaction2> transactions = new ArrayList<>();
+    public static List<Transaction> getTransactions(String type, Double amount, Integer categoryID){
+        List<Transaction> transactions = new ArrayList<>();
         Connection connection = DatabaseConnector.connect();
 
         // connected successfully
@@ -129,7 +128,7 @@ public abstract class TransactionDAO {
                 ResultSet result = statement.executeQuery();
 
                 while(result.next()){
-                    Transaction2 transaction;
+                    Transaction transaction;
                     String returnedType = result.getString("type");
 
                     if(returnedType.equals("income")){
@@ -160,7 +159,7 @@ public abstract class TransactionDAO {
     }
     
     // insert a new transaction. Return the generated id of the transaction.
-    public static int insertTransaction(Transaction2 transaction){
+    public static int insertTransaction(Transaction transaction){
         int generatedID = 0;
 
         connection = DatabaseConnector.connect();
@@ -240,7 +239,7 @@ public abstract class TransactionDAO {
     }
 
     // update a transaction by a given updated transaction
-    public static void  updateTransaction(Transaction2 transaction){
+    public static void  updateTransaction(Transaction transaction){
         Connection connection = DatabaseConnector.connect();
 
         if(connection != null){
