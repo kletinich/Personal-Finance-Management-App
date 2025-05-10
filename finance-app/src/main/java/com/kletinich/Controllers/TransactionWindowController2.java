@@ -59,7 +59,7 @@ public class TransactionWindowController2 {
 
         transactionsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        List<Transaction2> transactionsList = TransactionDAO.getTransactions2(null, null, null);
+        List<Transaction2> transactionsList = TransactionDAO.getTransactions(null, null, null);
         SessionData2.setTransactions(transactionsList);
         ObservableList<Transaction2> transactions = FXCollections.observableArrayList(transactionsList);
 

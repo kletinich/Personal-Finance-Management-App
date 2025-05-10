@@ -170,13 +170,13 @@ public class UpdateTransactionWindowController2 {
         if(validData){
             // inserting new transaction
             if(newTransaction){
-                int generatedID = TransactionDAO.insertTransaction2(updatedTransaction);
+                int generatedID = TransactionDAO.insertTransaction(updatedTransaction);
                 updatedTransaction.setTransactionID(generatedID);
             }
 
             // updating existing transaction
             else{
-                TransactionDAO.updateTransaction2(updatedTransaction);
+                TransactionDAO.updateTransaction(updatedTransaction);
             }
             
             closeWindow();
