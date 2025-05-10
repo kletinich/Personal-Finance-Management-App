@@ -250,10 +250,10 @@ public abstract class TransactionDAO {
             }catch(SQLException e){
                 System.err.println("Error while executing GET from transactions2!");
             } 
-            
+
+            DatabaseConnector.Disconnect();
         }
             
-        DatabaseConnector.Disconnect();
         return transactions;
     }
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -359,6 +359,8 @@ public abstract class TransactionDAO {
         }
     }
 
+
+
     // update a transaction by a given updated transaction
     public static void  updateTransaction(Transaction transaction){
         Connection connection = DatabaseConnector.connect();
@@ -411,5 +413,42 @@ public abstract class TransactionDAO {
 
             DatabaseConnector.Disconnect();
         }
+    }
+
+    public static void  updateTransaction2(Transaction2 transaction){
+        Connection connection = DatabaseConnector.connect();
+
+        if(connection != null){
+            String query = "UPDATE transactions2 SET " +
+                "amount = ?, type = ?, category_id = ?, date = ?, note = ?" +
+                " WHERE transaction_id = ?";
+
+            try{
+                PreparedStatement statement = connection.prepareStatement(query);
+
+                statement.setDouble(1, transaction.getAmount());
+                statement.setString(2, transaction.getType());
+                statement.setInt(3, transaction.getCategory().getID());
+                statement.setDate(4, transaction.getDate());
+                statement.setString(5, transaction.getNote());
+                statement.setInt(6, transaction.getTransactionID());
+
+                int affectedRows = statement.executeUpdate();
+
+                if(affectedRows > 0){
+                    System.out.println("Transaction updated successfully!");
+                }
+    
+                else{
+                    System.err.println("Transaction couldn't be updated!"); 
+                }
+
+            }catch(SQLException e){
+                System.err.println("Error while executing UPDATE in transactions!");
+            }
+
+            DatabaseConnector.Disconnect();
+        }
+
     }
 }

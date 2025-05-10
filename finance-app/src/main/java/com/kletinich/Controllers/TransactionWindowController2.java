@@ -45,7 +45,6 @@ public class TransactionWindowController2 {
     @FXML private TableColumn<Transaction2, Double> amountColumn;
     @FXML private TableColumn<Transaction2, String> categoryColumn;
     @FXML private TableColumn<Transaction2, Date> dateColumn;
-    @FXML private TableColumn<Transaction2, String> budgetSavingColumn;
     @FXML private TableColumn<Transaction2, String> noteColumn;
     @FXML private TableColumn<Transaction2, Button> deleteColumn;
     @FXML private TableColumn<Transaction2, Button> updateColumn;
@@ -174,7 +173,7 @@ public class TransactionWindowController2 {
 
         loadUpdateTransactionWindow(transaction);
 
-        /*Transaction updatedTransaction = updateTransactionWindowController.getUpdatedTransaction();
+        Transaction2 updatedTransaction = updateTransactionWindowController.getUpdatedTransaction();
 
         newAmount = updatedTransaction.getAmount();
         newType = updatedTransaction.getType();
@@ -183,7 +182,7 @@ public class TransactionWindowController2 {
         transactionsTable.refresh();
 
         // update the balance label with the updated values of the updated transaction
-        updateBalanceLabel(oldAmount, newAmount, oldType, newType);*/
+        updateBalanceLabel(oldAmount, newAmount, oldType, newType);
     }
 
 

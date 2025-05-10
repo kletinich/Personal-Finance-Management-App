@@ -38,7 +38,6 @@ public class UpdateTransactionWindowController2 {
     public void setTransactionData(Transaction2 transaction, ComboBox<String> type, ComboBox<Category> categories){
         typeFilter.setItems(type.getItems());
         categoryFilter.setItems(categories.getItems());
-        
         if(transaction == null){
             newTransaction = true;
             idLabel.setVisible(false);
@@ -92,7 +91,7 @@ public class UpdateTransactionWindowController2 {
         String type = typeFilter.getValue();
         Category category = categoryFilter.getValue();
 
-        // handeling new transaction
+        // inserting new transaction - type
         if(updatedTransaction == null){
             if(type == null){
                 validData = false;
@@ -109,11 +108,28 @@ public class UpdateTransactionWindowController2 {
             }
         }
 
+        // updating existing transaction - type
+        else{
+            int transactionID = updatedTransaction.getTransactionID();
+
+            if(type.equals("income") && (updatedTransaction instanceof Expense)){
+                updatedTransaction = new Income();
+            }
+
+            else if(type.equals("expense") && (updatedTransaction instanceof Income)){
+                updatedTransaction = new Expense();
+            }
+
+            updatedTransaction.setTransactionID(transactionID);
+        }
+
+        // date
         if(datePicker.getValue() != null){
             LocalDate localDate = datePicker.getValue();
             updatedTransaction.setDate(Date.valueOf(localDate));
         }
 
+        // amount
         try{
             if(amountString != null && !amountString.trim().isEmpty()){
                 amount = Double.parseDouble(amountString);
@@ -148,7 +164,6 @@ public class UpdateTransactionWindowController2 {
 
         updatedTransaction.setNote(noteTextBox.getText());
 
-
         if(validData){
             // inserting new transaction
             if(newTransaction){
@@ -160,9 +175,7 @@ public class UpdateTransactionWindowController2 {
 
             // updating existing transaction
             else{
-                // to do: update updateTransaction to the update
-
-                //TransactionDAO.updateTransaction(updatedTransaction);
+                TransactionDAO.updateTransaction2(updatedTransaction);
             }
             
             closeWindow();

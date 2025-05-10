@@ -58,7 +58,6 @@
                 <TableColumn fx:id="amountColumn" prefWidth="100.0" text="Amount" />
                   <TableColumn fx:id="categoryColumn" prefWidth="100.0" text="Category" />
                   <TableColumn fx:id="dateColumn" prefWidth="100" text="Date" />
-                  <TableColumn fx:id="budgetSavingColumn" prefWidth="118.4000244140625" text="Budget/Saving" />
                   <TableColumn fx:id="noteColumn" prefWidth="76.79998779296875" text="Note" />
                   <TableColumn fx:id="deleteColumn" prefWidth="50" />
                   <TableColumn fx:id="updateColumn" prefWidth="50" />
