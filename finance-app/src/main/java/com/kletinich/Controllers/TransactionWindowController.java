@@ -51,7 +51,7 @@ public class TransactionWindowController {
 
     @FXML private Button newTransactionButton;
 
-    private UpdateTransactionWindowController2 updateTransactionWindowController;
+    private UpdateTransactionWindowController updateTransactionWindowController;
 
     // initialize all the UI components to display the window
     @FXML
