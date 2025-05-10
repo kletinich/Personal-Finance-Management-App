@@ -17,6 +17,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -25,6 +28,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class TransactionWindowController2 {
         @FXML private Label balanceLabel;
@@ -47,7 +52,7 @@ public class TransactionWindowController2 {
 
     @FXML private Button newTransactionButton;
 
-    private UpdateTransactionWindowController updateTransactionWindowController;
+    private UpdateTransactionWindowController2 updateTransactionWindowController;
 
     @FXML
     public void initialize(){
@@ -159,17 +164,60 @@ public class TransactionWindowController2 {
     // when an update button is pressed, open new window for updating the transaction
     @FXML
     public void updateButtonPressed(Transaction2 transaction, int index){
-        System.out.println("update transaction");
+        Double oldAmount;
+        Double newAmount;
+        String oldType;
+        String newType;
+
+        oldAmount = transaction.getAmount();
+        oldType = transaction.getType();
+
+        loadUpdateTransactionWindow(transaction);
+
+        /*Transaction updatedTransaction = updateTransactionWindowController.getUpdatedTransaction();
+
+        newAmount = updatedTransaction.getAmount();
+        newType = updatedTransaction.getType();
+    
+        transactionsTable.getItems().set(index, updatedTransaction);
+        transactionsTable.refresh();
+
+        // update the balance label with the updated values of the updated transaction
+        updateBalanceLabel(oldAmount, newAmount, oldType, newType);*/
     }
 
 
     @FXML
     public void newTransactionButtonPressed(){
-        System.out.println("new transaction");
+        loadUpdateTransactionWindow(null);
+
+        /*Transaction2 newTransaction = updateTransactionWindowController.getUpdatedTransaction();
+
+        if(newTransaction.getTransactionID() != -1){
+            transactionsTable.getItems().add(newTransaction);
+            transactionsTable.refresh();
+        }
+
+        updateBalanceLabel(null, newTransaction.getAmount(), null, newTransaction.getType());*/
     }
 
-    public void loadUpdateTransactionWindow(Transaction transaction){
-        
+    public void loadUpdateTransactionWindow(Transaction2 transaction){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/kletinich/fxml/transactions/UpdateTransactionWindow.fxml"));
+            Parent root = loader.load();
+
+            updateTransactionWindowController = loader.getController();
+            updateTransactionWindowController.setTransactionData(transaction, typeFilter, categoryFilter);
+
+            Stage updateTransactionStage = new Stage();
+            updateTransactionStage.initModality(Modality.APPLICATION_MODAL);
+            updateTransactionStage.setTitle("Update Transaction");
+            updateTransactionStage.setScene(new Scene(root));
+            updateTransactionStage.showAndWait();
+
+        }catch(Exception e){
+            System.out.println("Error while staging UpdateTransactionWindow!");
+        }
     }
 
     @FXML
