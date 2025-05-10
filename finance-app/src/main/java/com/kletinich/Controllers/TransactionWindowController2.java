@@ -157,7 +157,27 @@ public class TransactionWindowController2 {
     // when a delete button is pressed, delete the transaction associated with the index
     @FXML
     public void deleteButtonPressed(int index){
-        System.out.println("delete transaction");
+        double totalBalance = SessionData2.getTotalBalance();
+
+        if(index >= 0){
+            Transaction2 transaction = deleteColumn.getTableView().getItems().get(index);
+            System.out.println("Deleting " + transaction);
+            TransactionDAO.deleteTransactionByID(transaction.getTransactionID());
+            deleteColumn.getTableView().getItems().remove(transaction);
+
+            // update total balance after update
+            if(transaction.getType().equals("income")){
+                totalBalance -= transaction.getAmount();
+            }
+
+            else{
+                totalBalance += transaction.getAmount();
+            }
+
+            balanceLabel.setText("Total balance: " + String.valueOf(totalBalance));
+            SessionData2.deleteTransaction(transaction);
+            SessionData2.setTotalBalance(totalBalance);
+        }
     }
 
     // when an update button is pressed, open new window for updating the transaction

@@ -328,6 +328,7 @@ public abstract class TransactionDAO {
         return generatedID;
     }
 
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public static int insertTransaction2(Transaction2 transaction){
         int generatedID = 0;
 
@@ -374,7 +375,7 @@ public abstract class TransactionDAO {
 
         return generatedID;
     }
-
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
 
@@ -387,7 +388,7 @@ public abstract class TransactionDAO {
 
         // connected successfully
         if(connection != null){
-            String query = "DELETE FROM transactions WHERE " +
+            String query = "DELETE FROM transactions2 WHERE " +
                 "transaction_id = ?";
 
             try{
