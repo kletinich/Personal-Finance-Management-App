@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="transactionWindow" prefHeight="400.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kletinich.Controllers.TransactionWindowController2">
+<AnchorPane fx:id="transactionWindow" prefHeight="400.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kletinich.Controllers.TransactionWindowController">
    <children>
       <VBox layoutY="1.0" prefHeight="500" prefWidth="1200">
          <children>
