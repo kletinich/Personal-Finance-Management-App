@@ -53,6 +53,7 @@ public class TransactionWindowController2 {
 
     private UpdateTransactionWindowController2 updateTransactionWindowController;
 
+    // initialize all the UI components to display the window
     @FXML
     public void initialize(){
         SessionData.setTotalBalance(0);
@@ -180,8 +181,7 @@ public class TransactionWindowController2 {
         }
     }
 
-    // when an update button is pressed, open new window for updating the transaction
-    @FXML
+    // when an update button is pressed, start the update procedure
     public void updateButtonPressed(Transaction2 transaction, int index){
         Double oldAmount;
         Double newAmount;
@@ -205,7 +205,7 @@ public class TransactionWindowController2 {
         updateBalanceLabel(oldAmount, newAmount, oldType, newType);
     }
 
-
+    // when an insert button is pressed, start the insert new transaction procedure
     @FXML
     public void newTransactionButtonPressed(){
         loadUpdateTransactionWindow(null);
@@ -220,6 +220,7 @@ public class TransactionWindowController2 {
         }
     }
 
+    // load th window that handles inserting / updating transactions
     public void loadUpdateTransactionWindow(Transaction2 transaction){
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/kletinich/fxml/transactions/UpdateTransactionWindow.fxml"));
@@ -239,14 +240,51 @@ public class TransactionWindowController2 {
         }
     }
 
+    // filter the data of the table with the filtered potions
     @FXML
     public void filterButtonPressed(){
-        System.out.println("filter");
+        String type = typeFilter.getValue();
+        Integer categoryID = null;
+        Double amount = null;
+
+        amountTextField.setStyle("");
+
+        Category selectedCategory = categoryFilter.getValue();
+
+        if(selectedCategory != null){
+            categoryID = selectedCategory.getID();
+        }
+
+        String amountString = amountTextField.getText();
+
+        try{
+            if(amountString != null && !amountString.trim().isEmpty()){
+                amount = Double.parseDouble(amountString);
+            }
+
+        }catch(NumberFormatException e){
+            amountTextField.setText("Not a valid value!");
+            amountTextField.setStyle("-fx-background-color: red;");
+            return;
+        }
+
+        List<Transaction2> filteredTransactions = TransactionDAO.getTransactions(type, amount, categoryID);
+        transactionsTable.setItems(FXCollections.observableArrayList(filteredTransactions));
     }
 
+    // reset the filter and display all the transactions of the table
     @FXML
     public void resetFilterButtonPressed(){
-        System.out.println("reset filter");
+        List<Transaction2> transactions = SessionData2.getTransactionsList();
+        transactionsTable.setItems(FXCollections.observableArrayList(transactions));
+        
+        typeFilter.getSelectionModel().clearSelection();
+        categoryFilter.getSelectionModel().clearSelection();
+        amountTextField.clear();
+        
+        typeFilter.setPromptText("Transaction Type");
+        categoryFilter.setPromptText("Category");
+        amountTextField.setPromptText("Amount");
     }
 
     // reset the amount box for visual clearity
