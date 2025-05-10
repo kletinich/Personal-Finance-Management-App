@@ -16,6 +16,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.stage.Stage;
 
 public class UpdateTransactionWindowController {
@@ -35,8 +36,9 @@ public class UpdateTransactionWindowController {
 
     // display the data of the current selected transaction
     public void setTransactionData(Transaction transaction, ComboBox<String> type, ComboBox<Category> categories){
-        typeFilter.setItems(type.getItems());
-        categoryFilter.setItems(categories.getItems());
+
+        initializeFilters(type, categories);
+
         if(transaction == null){
             newTransaction = true;
             idLabel.setVisible(false);
@@ -46,6 +48,7 @@ public class UpdateTransactionWindowController {
 
         else{
             newTransaction = false;
+
             typeFilter.setValue(transaction.getType());
 
             idLabel.setVisible(true);
@@ -54,8 +57,7 @@ public class UpdateTransactionWindowController {
             idLabel.setText(String.valueOf(transaction.getTransactionID()));
             
             if(transaction.getDate() != null){
-                LocalDate localDate = transaction.getDate().toLocalDate();
-                datePicker.setValue(localDate);
+                datePicker.setValue(transaction.getDate().toLocalDate());
             }
 
             amountTextBox.setText(String.valueOf(transaction.getAmount()));
@@ -74,6 +76,12 @@ public class UpdateTransactionWindowController {
         }
     }
 
+    // set the filters
+    private void initializeFilters(ComboBox<String> type, ComboBox<Category> categories){
+        typeFilter.setItems(type.getItems());
+        categoryFilter.setItems(categories.getItems());
+    }
+
     // close the window and return to the main transactions view window
     @FXML
     public void closeWindow(){
@@ -85,10 +93,11 @@ public class UpdateTransactionWindowController {
     @FXML
     public void updateButtonPressed(){
         boolean validData = true;
-        String amountString = amountTextBox.getText();
         Double amount;
-        String type = typeFilter.getValue();
         Category category = categoryFilter.getValue();
+
+        String amountString = amountTextBox.getText();
+        String type = typeFilter.getValue();
         String note = noteTextBox.getText();
 
         // inserting new transaction - type
@@ -96,7 +105,8 @@ public class UpdateTransactionWindowController {
             if(type == null){
                 validData = false;
 
-                // to do: handle UI printing for not choosing a type
+               typeFilter.setStyle("-fx-border-color: red;");
+               typeFilter.setPromptText("Please select a type");
             }
 
             else if(type.equals("income")){
@@ -138,7 +148,6 @@ public class UpdateTransactionWindowController {
                 }
 
                 updatedTransaction.setAmount(amount);
-                amountTextBox.setStyle("");
                 validData = true;
             }
 
@@ -148,14 +157,15 @@ public class UpdateTransactionWindowController {
 
         }catch(NumberFormatException e){
             amountTextBox.setText("Not a valid value!");
-            amountTextBox.setStyle("-fx-background-color: red;");
+            amountTextBox.setStyle("-fx-border-color: red;");
             validData = false;
         }
 
         if(category == null){
             validData = false;
 
-            // to do: handle UI printing for not choosing a category
+               categoryFilter.setStyle("-fx-border-color: red;");
+               categoryFilter.setPromptText("Please select a type");
         }
 
         else{
@@ -180,6 +190,10 @@ public class UpdateTransactionWindowController {
             
             closeWindow();
         }
+
+        else if(newTransaction){
+            updatedTransaction = null;
+        }
     }
 
     public Transaction getUpdatedTransaction(){
@@ -192,9 +206,25 @@ public class UpdateTransactionWindowController {
 
     @FXML
     public void resetAmountBox(){
-        if(amountTextBox.getStyle().contains("-fx-background-color: red;")){
+        if(amountTextBox.getStyle().contains("-fx-border-color: red;")){
             amountTextBox.setText("");
             amountTextBox.setStyle("");
+        }
+    }
+
+    @FXML 
+    public void resetTypeFilter(){
+        if(typeFilter.getStyle().contains("-fx-border-color: red;")){
+            typeFilter.setStyle("");
+            typeFilter.setPromptText("");
+        }
+    }
+
+    @FXML 
+    public void resetCategoryFilter(){
+        if(categoryFilter.getStyle().contains("-fx-border-color: red;")){
+            categoryFilter.setStyle("");
+            categoryFilter.setPromptText("");
         }
     }
 }
