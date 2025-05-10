@@ -8,6 +8,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.kletinich.database.tables.Category;
+import com.kletinich.database.tables.Expense;
+import com.kletinich.database.tables.Income;
 import com.kletinich.database.tables.Transaction;
 
 // Data Access Object class for accessing and using queries on transactions table
@@ -34,25 +37,22 @@ public abstract class TransactionDAO {
                 ResultSet result = statement.executeQuery();
 
                 if(result.next()){
-                    Integer budgetID = result.getInt("budget_id");
-                    if(result.wasNull()){
-                        budgetID = null;
+                    String type = result.getString("type");
+
+                    if(type.equals("income")){
+                        transaction = new Income();
                     }
 
-                    Integer savingID = result.getInt("saving_id");
-                    if(result.wasNull()){
-                        savingID = null;
+                    else{
+                        transaction = new Expense();
                     }
+                    transaction.setAmount(result.getDouble("amount"));
+                    transaction.setDate(result.getDate("date"));
+                    transaction.setNote(result.getString("note"));
 
-                    transaction = new Transaction(transactionID, 
-                        result.getString("type"), 
-                        result.getDouble("amount"), 
-                        result.getInt("category_id"), 
-                        result.getString("category_name"),
-                        result.getDate("date"), 
-                        budgetID, 
-                        savingID, 
-                        result.getString("note"));
+                    int categoryID = result.getInt("category_id");
+                    Category category = CategoryDAO.getCategoryByID(categoryID);
+                    transaction.setCategory(category);
                 }
 
                 else{
@@ -69,16 +69,16 @@ public abstract class TransactionDAO {
         return transaction;
     }
 
-    // get all transaction that satisfy a given parameters in transaction object
-    // get the transactions by tpye, amount and category id
-    public static List<Transaction> getTransactions(String type, Double amount, Integer categoryID){ // updating prevoius function - inner join added
+    // replace the getTransactions for the update
+    public static List<Transaction> getTransactions(String type, Double amount, Integer categoryID){
         List<Transaction> transactions = new ArrayList<>();
         Connection connection = DatabaseConnector.connect();
+
         // connected successfully
         if(connection != null){
             String query = "SELECT t.*, c.name AS category_name " + 
-                                "FROM transactions t " + 
-                                "JOIN categories c ON t.category_id = c.category_id ";
+            "FROM transactions t " + 
+            "JOIN categories c ON t.category_id = c.category_id ";
 
             int count = 0;
 
@@ -128,40 +128,36 @@ public abstract class TransactionDAO {
                 ResultSet result = statement.executeQuery();
 
                 while(result.next()){
-                    Integer budgetID = result.getInt("budget_id");
-                    if(result.wasNull()){
-                        budgetID = null;
+                    Transaction transaction;
+                    String returnedType = result.getString("type");
+
+                    if(returnedType.equals("income")){
+                        transaction = new Income();
                     }
-    
-                    Integer savingID = result.getInt("saving_id");
-                    if(result.wasNull()){
-                        savingID = null;
+
+                    else{
+                        transaction = new Expense();
                     }
-    
-                    Transaction transaction = new Transaction(result.getInt("transaction_id"), 
-                        result.getString("type"), 
-                        result.getDouble("amount"), 
-                        result.getInt("category_id"), 
-                        result.getString("category_name"),
-                        result.getDate("date"), 
-                        budgetID, 
-                        savingID, 
-                        result.getString("note"));
+
+                    transaction.setTransactionID(result.getInt("transaction_id"));
+                    transaction.setAmount(result.getDouble("amount"));
+                    transaction.setCategory(new Category(result.getInt("category_id"), result.getString("category_name")));
+                    transaction.setDate(result.getDate("date"));
+                    transaction.setNote(result.getString("note"));
 
                     transactions.add(transaction);
-                }   
+                }
 
-                DatabaseConnector.Disconnect();
-                
-                }catch(SQLException e){
-                    System.err.println("Error while executing GET from transactions!");
-            }
+            }catch(SQLException e){
+                System.err.println("Error while executing GET from transactions2!");
+            } 
+
+            DatabaseConnector.Disconnect();
         }
-
+            
         return transactions;
-        
     }
-
+    
     // insert a new transaction. Return the generated id of the transaction.
     public static int insertTransaction(Transaction transaction){
         int generatedID = 0;
@@ -171,33 +167,17 @@ public abstract class TransactionDAO {
         // connected successfully
         if(connection != null){
             String query = "INSERT INTO transactions " +
-                "(type, amount, category_id, date, budget_id, saving_id, note)" +
-                "VALUES ( ?, ?, ?, ?, ?, ?, ?)";
+                "(amount, type, category_id, date, note)" +
+                "VALUES (?, ?, ?, ?, ?)";
 
             try {
                 PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
-                statement.setString(1, transaction.getType());
-                statement.setDouble(2, transaction.getAmount());
-                statement.setInt(3, transaction.getCategoryID());
+                statement.setDouble(1, transaction.getAmount());
+                statement.setString(2, transaction.getType());
+                statement.setInt(3, transaction.getCategory().getID());
                 statement.setDate(4, transaction.getDate());
-                statement.setString(7, transaction.getNote());
-
-                if(transaction.getBudgetID() == null){
-                    statement.setNull(5, java.sql.Types.INTEGER);
-                }
-
-                else{
-                    statement.setInt(5, transaction.getBudgetID()); 
-                }
-
-                if(transaction.getSavingID() == null){
-                    statement.setNull(6, java.sql.Types.INTEGER);
-                }
-
-                else{
-                    statement.setInt(6, transaction.getSavingID());
-                }
+                statement.setString(5, transaction.getNote());
 
                 int affectedRows = statement.executeUpdate();
 
@@ -212,11 +192,12 @@ public abstract class TransactionDAO {
 
                 else{
                     System.out.println("Transaction couldn't be inserted!");
+                    throw(new SQLException());
                 }
 
-            } catch (SQLException e) {
+            }catch(SQLException e){
                 System.err.println("Error while executing INSERT into transactions!");
-                return -1;
+                return -1;  
             }
 
             DatabaseConnector.Disconnect();
@@ -263,35 +244,18 @@ public abstract class TransactionDAO {
 
         if(connection != null){
             String query = "UPDATE transactions SET " +
-                "type = ?, amount = ?, category_id = ?, date = ?, budget_id = ?, saving_id = ?, note = ?" +
+                "amount = ?, type = ?, category_id = ?, date = ?, note = ?" +
                 " WHERE transaction_id = ?";
 
             try{
                 PreparedStatement statement = connection.prepareStatement(query);
 
-                statement.setString(1, transaction.getType());
-                statement.setDouble(2, transaction.getAmount());
-                statement.setInt(3, transaction.getCategoryID());
+                statement.setDouble(1, transaction.getAmount());
+                statement.setString(2, transaction.getType());
+                statement.setInt(3, transaction.getCategory().getID());
                 statement.setDate(4, transaction.getDate());
-                statement.setString(7, transaction.getNote());
-
-                if(transaction.getBudgetID() == null){
-                    statement.setNull(5, java.sql.Types.INTEGER);
-                }
-    
-                else{
-                    statement.setInt(5, transaction.getBudgetID()); 
-                }
-    
-                if(transaction.getSavingID() == null){
-                    statement.setNull(6, java.sql.Types.INTEGER);
-                }
-    
-                else{
-                    statement.setInt(6, transaction.getSavingID());
-                }
-
-                statement.setInt(8, transaction.getTransactionID());
+                statement.setString(5, transaction.getNote());
+                statement.setInt(6, transaction.getTransactionID());
 
                 int affectedRows = statement.executeUpdate();
 
@@ -302,12 +266,13 @@ public abstract class TransactionDAO {
                 else{
                     System.err.println("Transaction couldn't be updated!"); 
                 }
-                    
+
             }catch(SQLException e){
-                    System.err.println("Error while executing UPDATE in transactions!");
+                System.err.println("Error while executing UPDATE in transactions!");
             }
 
             DatabaseConnector.Disconnect();
         }
+
     }
 }

@@ -1,12 +1,12 @@
 package com.kletinich.Controllers;
 
-
 import java.sql.Date;
 import java.time.LocalDate;
 
-import com.kletinich.database.CategoryDAO;
 import com.kletinich.database.TransactionDAO;
 import com.kletinich.database.tables.Category;
+import com.kletinich.database.tables.Expense;
+import com.kletinich.database.tables.Income;
 import com.kletinich.database.tables.Transaction;
 
 import javafx.fxml.FXML;
@@ -35,9 +35,9 @@ public class UpdateTransactionWindowController {
 
     // display the data of the current selected transaction
     public void setTransactionData(Transaction transaction, ComboBox<String> type, ComboBox<Category> categories){
-        typeFilter.setItems(type.getItems());
-        categoryFilter.setItems(categories.getItems());
-        
+
+        initializeFilters(type, categories);
+
         if(transaction == null){
             newTransaction = true;
             idLabel.setVisible(false);
@@ -47,6 +47,7 @@ public class UpdateTransactionWindowController {
 
         else{
             newTransaction = false;
+
             typeFilter.setValue(transaction.getType());
 
             idLabel.setVisible(true);
@@ -54,15 +55,13 @@ public class UpdateTransactionWindowController {
 
             idLabel.setText(String.valueOf(transaction.getTransactionID()));
             
-            // set the date in the view, if exists. If not, don't display any date
             if(transaction.getDate() != null){
-                LocalDate localDate = transaction.getDate().toLocalDate();
-                datePicker.setValue(localDate);
+                datePicker.setValue(transaction.getDate().toLocalDate());
             }
 
             amountTextBox.setText(String.valueOf(transaction.getAmount()));
 
-            String categoryName = transaction.getCategoryName();
+            String categoryName = transaction.getCategory().getName();
             for(Category category : categoryFilter.getItems()){
                 if(category.getName().equals(categoryName)){
                     categoryFilter.setValue(category);
@@ -70,12 +69,16 @@ public class UpdateTransactionWindowController {
                 }
             }
 
-            // to do: add budget/saving view to comboBox
-
             noteTextBox.setText(transaction.getNote());
 
             updatedTransaction = transaction;
         }
+    }
+
+    // set the filters
+    private void initializeFilters(ComboBox<String> type, ComboBox<Category> categories){
+        typeFilter.setItems(type.getItems());
+        categoryFilter.setItems(categories.getItems());
     }
 
     // close the window and return to the main transactions view window
@@ -89,35 +92,63 @@ public class UpdateTransactionWindowController {
     @FXML
     public void updateButtonPressed(){
         boolean validData = true;
-        String amountString = amountTextBox.getText();
         Double amount;
+        Category category = categoryFilter.getValue();
 
+        String amountString = amountTextBox.getText();
+        String type = typeFilter.getValue();
+        String note = noteTextBox.getText();
+
+        // inserting new transaction - type
         if(updatedTransaction == null){
-            updatedTransaction = new Transaction(null, amountString, 1, 1, amountString, null, null, null, "");
+            if(type == null){
+                validData = false;
+
+               typeFilter.setStyle("-fx-border-color: red;");
+               typeFilter.setPromptText("Please select a type");
+            }
+
+            // changing from expense to income
+            else if(type.equals("income")){
+                updatedTransaction = new Income();
+            }
+
+            // changing from income to expense
+            else{
+                updatedTransaction = new Expense();
+            }
         }
 
+        // updating existing transaction - type
+        else{
+            int transactionID = updatedTransaction.getTransactionID();
+
+            if(type.equals("income") && (updatedTransaction instanceof Expense)){
+                updatedTransaction = new Income();
+            }
+
+            else if(type.equals("expense") && (updatedTransaction instanceof Income)){
+                updatedTransaction = new Expense();
+            }
+
+            updatedTransaction.setTransactionID(transactionID);
+        }
+
+        // date
         if(datePicker.getValue() != null){
             LocalDate localDate = datePicker.getValue();
             updatedTransaction.setDate(Date.valueOf(localDate));
         }
 
-        if(typeFilter.getValue() == null){
-            validData = false;
-            // to do: add warning for empty data
-        }
-
-        else{
-            updatedTransaction.setType(typeFilter.getValue());
-        }
-
+        // amount
         try{
             if(amountString != null && !amountString.trim().isEmpty()){
                 amount = Double.parseDouble(amountString);
                 if(amount <= 0){
                     throw(new NumberFormatException());
                 }
+
                 updatedTransaction.setAmount(amount);
-                amountTextBox.setStyle("");
                 validData = true;
             }
 
@@ -127,23 +158,28 @@ public class UpdateTransactionWindowController {
 
         }catch(NumberFormatException e){
             amountTextBox.setText("Not a valid value!");
-            amountTextBox.setStyle("-fx-background-color: red;");
+            amountTextBox.setStyle("-fx-border-color: red;");
             validData = false;
         }
 
-        if(categoryFilter.getValue() == null){
+        // category
+        if(category == null){
             validData = false;
+
+            categoryFilter.setStyle("-fx-border-color: red;");
+            categoryFilter.setPromptText("Please select a type");
         }
 
         else{
-            updatedTransaction.setCategoryName(categoryFilter.getValue().toString());
-            updatedTransaction.setCategoryID(CategoryDAO.getCategoryIDByName(updatedTransaction.getCategoryName()));
+            updatedTransaction.setCategory(category);
         }
 
-        updatedTransaction.setNote(noteTextBox.getText());
+        // note
+        if(validData && note != null){
+            updatedTransaction.setNote(note);
+        }
 
-        // to do: add budget/saving
-        
+        // conclude and insert or update transaction if all data is valid
         if(validData){
 
             // inserting new transaction
@@ -159,6 +195,10 @@ public class UpdateTransactionWindowController {
             
             closeWindow();
         }
+
+        else if(newTransaction){
+            updatedTransaction = null;
+        }
     }
 
     public Transaction getUpdatedTransaction(){
@@ -167,5 +207,29 @@ public class UpdateTransactionWindowController {
 
     public void resetTransaction(){
         updatedTransaction = null;
+    }
+
+    @FXML
+    public void resetAmountBox(){
+        if(amountTextBox.getStyle().contains("-fx-border-color: red;")){
+            amountTextBox.setText("");
+            amountTextBox.setStyle("");
+        }
+    }
+
+    @FXML 
+    public void resetTypeFilter(){
+        if(typeFilter.getStyle().contains("-fx-border-color: red;")){
+            typeFilter.setStyle("");
+            typeFilter.setPromptText("");
+        }
+    }
+
+    @FXML 
+    public void resetCategoryFilter(){
+        if(categoryFilter.getStyle().contains("-fx-border-color: red;")){
+            categoryFilter.setStyle("");
+            categoryFilter.setPromptText("");
+        }
     }
 }

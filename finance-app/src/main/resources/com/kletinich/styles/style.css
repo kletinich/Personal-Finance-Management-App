@@ -6,7 +6,31 @@
 /* Labels */
 .label {
     -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-font-weight: normal;
     -fx-text-fill: #333;
+    -fx-alignment: center-left;
+    -fx-padding: 0 10px;
+}
+
+/* Title Label */
+.label.title-label {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+    -fx-alignment: center-left;
+    -fx-padding: 10px 10px;
+}
+
+/* Specific Label Styling for Better Visibility */
+.label.bold {
+    -fx-font-weight: bold;
+    -fx-text-fill: #4CAF50; /* Green color for important labels */
+}
+
+.label.error {
+    -fx-font-size: 12px;
+    -fx-text-fill: #D32F2F; /* Red color for error labels */
 }
 
 /* Text Fields and ComboBoxes */
@@ -77,4 +101,26 @@
 /* Pane Spacer */
 .pane {
     -fx-background-color: transparent;
+}
+
+/* Additional Text Styles */
+.text-field, .combo-box, .date-picker, .text-area {
+    -fx-font-size: 14px;
+    -fx-padding: 8px;
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5px;
+    -fx-pref-width: 250px;
+    -fx-text-fill: #333333;
+}
+
+/* TextField & TextArea Focus Styles */
+.text-field:focused, .combo-box:focused, .date-picker:focused, .text-area:focused {
+    -fx-border-color: #0078D4; /* Blue border on focus */
+}
+
+/* Button Padding */
+.hbox {
+    -fx-spacing: 20px;
+    -fx-alignment: center;
 }
