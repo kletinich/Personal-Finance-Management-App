@@ -30,7 +30,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class TransactionWindowController {
-        @FXML private Label balanceLabel;
+    @FXML private Label balanceLabel;
 
     @FXML private ComboBox<String> typeFilter;
     @FXML private ComboBox<Category> categoryFilter;
