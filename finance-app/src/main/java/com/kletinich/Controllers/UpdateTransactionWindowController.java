@@ -109,10 +109,12 @@ public class UpdateTransactionWindowController {
                typeFilter.setPromptText("Please select a type");
             }
 
+            // changing from expense to income
             else if(type.equals("income")){
                 updatedTransaction = new Income();
             }
 
+            // changing from income to expense
             else{
                 updatedTransaction = new Expense();
             }
@@ -161,22 +163,26 @@ public class UpdateTransactionWindowController {
             validData = false;
         }
 
+        // category
         if(category == null){
             validData = false;
 
-               categoryFilter.setStyle("-fx-border-color: red;");
-               categoryFilter.setPromptText("Please select a type");
+            categoryFilter.setStyle("-fx-border-color: red;");
+            categoryFilter.setPromptText("Please select a type");
         }
 
         else{
             updatedTransaction.setCategory(category);
         }
 
+        // note
         if(validData && note != null){
             updatedTransaction.setNote(note);
         }
 
+        // conclude and insert or update transaction if all data is valid
         if(validData){
+
             // inserting new transaction
             if(newTransaction){
                 int generatedID = TransactionDAO.insertTransaction(updatedTransaction);
