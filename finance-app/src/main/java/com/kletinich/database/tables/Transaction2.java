@@ -13,7 +13,7 @@ public abstract class Transaction2 {
         this.transactionID = null;
         this.amount = 0;
         this.date = null;
-        this.note = null;
+        this.note = "";
     }
 
     public Transaction2(Integer transactionID, double amount, Category category, Date date, String note){

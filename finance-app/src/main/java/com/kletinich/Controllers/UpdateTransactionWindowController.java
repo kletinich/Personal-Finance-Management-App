@@ -140,7 +140,9 @@ public class UpdateTransactionWindowController {
             updatedTransaction.setCategoryID(CategoryDAO.getCategoryIDByName(updatedTransaction.getCategoryName()));
         }
 
-        updatedTransaction.setNote(noteTextBox.getText());
+        if(noteTextBox.getText() != null){
+            updatedTransaction.setNote(noteTextBox.getText());
+        }
 
         // to do: add budget/saving
         

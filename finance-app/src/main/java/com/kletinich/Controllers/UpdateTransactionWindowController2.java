@@ -90,6 +90,7 @@ public class UpdateTransactionWindowController2 {
         Double amount;
         String type = typeFilter.getValue();
         Category category = categoryFilter.getValue();
+        String note = noteTextBox.getText();
 
         // inserting new transaction - type
         if(updatedTransaction == null){
@@ -162,15 +163,15 @@ public class UpdateTransactionWindowController2 {
             updatedTransaction.setCategory(category);
         }
 
-        updatedTransaction.setNote(noteTextBox.getText());
+        if(validData && note != null){
+            updatedTransaction.setNote(note);
+        }
 
         if(validData){
             // inserting new transaction
             if(newTransaction){
-                // to do: update insertTransaction to the update
-
-                //int generatedID = TransactionDAO.insertTransaction(updatedTransaction);
-                //updatedTransaction.setTransactionID(generatedID);
+                int generatedID = TransactionDAO.insertTransaction2(updatedTransaction);
+                updatedTransaction.setTransactionID(generatedID);
             }
 
             // updating existing transaction

@@ -190,14 +190,14 @@ public class TransactionWindowController2 {
     public void newTransactionButtonPressed(){
         loadUpdateTransactionWindow(null);
 
-        /*Transaction2 newTransaction = updateTransactionWindowController.getUpdatedTransaction();
+        Transaction2 newTransaction = updateTransactionWindowController.getUpdatedTransaction();
 
-        if(newTransaction.getTransactionID() != -1){
+        if(newTransaction != null && newTransaction.getTransactionID() != -1){
             transactionsTable.getItems().add(newTransaction);
             transactionsTable.refresh();
-        }
 
-        updateBalanceLabel(null, newTransaction.getAmount(), null, newTransaction.getType());*/
+            updateBalanceLabel(null, newTransaction.getAmount(), null, newTransaction.getType());
+        }
     }
 
     public void loadUpdateTransactionWindow(Transaction2 transaction){

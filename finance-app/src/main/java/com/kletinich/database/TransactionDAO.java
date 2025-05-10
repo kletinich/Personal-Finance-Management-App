@@ -314,6 +314,7 @@ public abstract class TransactionDAO {
 
                 else{
                     System.out.println("Transaction couldn't be inserted!");
+                    throw(new SQLException());
                 }
 
             } catch (SQLException e) {
@@ -326,6 +327,59 @@ public abstract class TransactionDAO {
 
         return generatedID;
     }
+
+    public static int insertTransaction2(Transaction2 transaction){
+        int generatedID = 0;
+
+        connection = DatabaseConnector.connect();
+
+        // connected successfully
+        if(connection != null){
+            String query = "INSERT INTO transactions2 " +
+                "(amount, type, category_id, date, note)" +
+                "VALUES (?, ?, ?, ?, ?)";
+
+            try {
+                PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+                statement.setDouble(1, transaction.getAmount());
+                statement.setString(2, transaction.getType());
+                statement.setInt(3, transaction.getCategory().getID());
+                statement.setDate(4, transaction.getDate());
+                statement.setString(5, transaction.getNote());
+
+                int affectedRows = statement.executeUpdate();
+
+                if(affectedRows > 0){
+                    System.out.println("Transaction inserted successfully!");
+
+                    ResultSet generatedKey = statement.getGeneratedKeys();
+                    if(generatedKey.next()){
+                        generatedID = generatedKey.getInt(1);
+                    }
+                }
+
+                else{
+                    System.out.println("Transaction couldn't be inserted!");
+                    throw(new SQLException());
+                }
+
+            }catch(SQLException e){
+                System.err.println("Error while executing INSERT into transactions!");
+                return -1;  
+            }
+
+            DatabaseConnector.Disconnect();
+        }
+
+        return generatedID;
+    }
+
+
+
+
+
+
 
     // delete a transaction by given transaction id
     public static void deleteTransactionByID(int transactionID){
