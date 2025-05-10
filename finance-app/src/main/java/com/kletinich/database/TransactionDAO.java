@@ -25,7 +25,7 @@ public abstract class TransactionDAO {
         // connected successfully
         if(connection != null){
             String query = "SELECT t.*, c.name AS category_name " + 
-                            "FROM transactions2 t " + 
+                            "FROM transactions t " + 
                             "JOIN categories c ON t.category_id = c.category_id " +
                             "WHERE transaction_id = ?";
 
@@ -77,7 +77,7 @@ public abstract class TransactionDAO {
         // connected successfully
         if(connection != null){
             String query = "SELECT t.*, c.name AS category_name " + 
-            "FROM transactions2 t " + 
+            "FROM transactions t " + 
             "JOIN categories c ON t.category_id = c.category_id ";
 
             int count = 0;
@@ -166,7 +166,7 @@ public abstract class TransactionDAO {
 
         // connected successfully
         if(connection != null){
-            String query = "INSERT INTO transactions2 " +
+            String query = "INSERT INTO transactions " +
                 "(amount, type, category_id, date, note)" +
                 "VALUES (?, ?, ?, ?, ?)";
 
@@ -212,7 +212,7 @@ public abstract class TransactionDAO {
 
         // connected successfully
         if(connection != null){
-            String query = "DELETE FROM transactions2 WHERE " +
+            String query = "DELETE FROM transactions WHERE " +
                 "transaction_id = ?";
 
             try{
@@ -243,7 +243,7 @@ public abstract class TransactionDAO {
         Connection connection = DatabaseConnector.connect();
 
         if(connection != null){
-            String query = "UPDATE transactions2 SET " +
+            String query = "UPDATE transactions SET " +
                 "amount = ?, type = ?, category_id = ?, date = ?, note = ?" +
                 " WHERE transaction_id = ?";
 
