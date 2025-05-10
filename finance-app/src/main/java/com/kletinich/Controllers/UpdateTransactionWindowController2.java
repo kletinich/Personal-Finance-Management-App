@@ -1,9 +1,13 @@
 package com.kletinich.Controllers;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
+import com.kletinich.database.CategoryDAO;
+import com.kletinich.database.TransactionDAO;
 import com.kletinich.database.tables.Category;
-import com.kletinich.database.tables.Transaction;
+import com.kletinich.database.tables.Expense;
+import com.kletinich.database.tables.Income;
 import com.kletinich.database.tables.Transaction2;
 
 import javafx.fxml.FXML;
@@ -85,9 +89,83 @@ public class UpdateTransactionWindowController2 {
         boolean validData = true;
         String amountString = amountTextBox.getText();
         Double amount;
+        String type = typeFilter.getValue();
+        Category category = categoryFilter.getValue();
 
+        // handeling new transaction
         if(updatedTransaction == null){
-            //updatedTransaction = new Transaction(null, amountString, 1, 1, amountString, null, null, null, "");
+            if(type == null){
+                validData = false;
+
+                // to do: handle UI printing for not choosing a type
+            }
+
+            else if(type.equals("income")){
+                updatedTransaction = new Income();
+            }
+
+            else{
+                updatedTransaction = new Expense();
+            }
+        }
+
+        if(datePicker.getValue() != null){
+            LocalDate localDate = datePicker.getValue();
+            updatedTransaction.setDate(Date.valueOf(localDate));
+        }
+
+        try{
+            if(amountString != null && !amountString.trim().isEmpty()){
+                amount = Double.parseDouble(amountString);
+                if(amount <= 0){
+                    throw(new NumberFormatException());
+                }
+
+                updatedTransaction.setAmount(amount);
+                amountTextBox.setStyle("");
+                validData = true;
+            }
+
+            else{
+                throw(new NumberFormatException());
+            }
+
+        }catch(NumberFormatException e){
+            amountTextBox.setText("Not a valid value!");
+            amountTextBox.setStyle("-fx-background-color: red;");
+            validData = false;
+        }
+
+        if(category == null){
+            validData = false;
+
+            // to do: handle UI printing for not choosing a category
+        }
+
+        else{
+            updatedTransaction.setCategory(category);
+        }
+
+        updatedTransaction.setNote(noteTextBox.getText());
+
+
+        if(validData){
+            // inserting new transaction
+            if(newTransaction){
+                // to do: update insertTransaction to the update
+
+                //int generatedID = TransactionDAO.insertTransaction(updatedTransaction);
+                //updatedTransaction.setTransactionID(generatedID);
+            }
+
+            // updating existing transaction
+            else{
+                // to do: update updateTransaction to the update
+
+                //TransactionDAO.updateTransaction(updatedTransaction);
+            }
+            
+            closeWindow();
         }
     }
 
