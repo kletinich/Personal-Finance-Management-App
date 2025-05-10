@@ -153,23 +153,45 @@ public class TransactionWindowController2 {
     // when a delete button is pressed, delete the transaction associated with the index
     @FXML
     public void deleteButtonPressed(int index){
+        System.out.println("delete transaction");
     }
 
     // when an update button is pressed, open new window for updating the transaction
     @FXML
     public void updateButtonPressed(Transaction2 transaction, int index){
-
+        System.out.println("update transaction");
     }
 
 
+    @FXML
+    public void newTransactionButtonPressed(){
+        System.out.println("new transaction");
+    }
 
+    public void loadUpdateTransactionWindow(Transaction transaction){
+        
+    }
 
+    @FXML
+    public void filterButtonPressed(){
+        System.out.println("filter");
+    }
 
+    @FXML
+    public void resetFilterButtonPressed(){
+        System.out.println("reset filter");
+    }
 
+    // reset the amount box for visual clearity
+    public void resetAmountBox(){
+        amountTextField.setStyle("");
+        amountTextField.setPromptText("Amount");
+        amountTextField.setText("");
+    }
 
     // setting the balance label with the balance calculation of all transactions
     public void initBalanceLabel(List<Transaction2> transactionsList){
-        double totalBalance = SessionData.getTotalBalance();
+        double totalBalance = SessionData2.getTotalBalance();
 
         for(Transaction2 t: transactionsList){
             if(t.getType().equals("income")){
@@ -182,7 +204,33 @@ public class TransactionWindowController2 {
         }
 
         balanceLabel.setText("Total balance: " + String.valueOf(totalBalance));
-        SessionData.setTotalBalance(totalBalance);
+        SessionData2.setTotalBalance(totalBalance);
+    }
+
+    // updating the balance label of one transcation
+    public void updateBalanceLabel(Double oldValue, Double newValue, String oldType, String newType){
+        double totalBalance = SessionData2.getTotalBalance();
+
+        if(oldValue != null && oldType != null){
+            if(oldType.equals("income")){
+                totalBalance -= oldValue;
+            }
+
+            else{
+                totalBalance += oldValue;
+            }
+        }
+
+        if(newType.equals("income")){
+            totalBalance += newValue;
+        }
+
+        else{
+            totalBalance -= newValue;
+        }
+
+        balanceLabel.setText("Total balance: " + String.valueOf(totalBalance));
+        SessionData2.setTotalBalance(totalBalance);
     }
 
 }
