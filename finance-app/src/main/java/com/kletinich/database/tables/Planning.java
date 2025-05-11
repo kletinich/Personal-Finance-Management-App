@@ -3,31 +3,31 @@ package com.kletinich.database.tables;
 // an abstract root class of Budget and Saving. 
 // Budget and Saving share common fields
 public abstract class Planning{
-    private Integer budgetID;
-    private String name;
-    private Category category;
-    private double amount;
-    private double spent;
-    private Double progress; 
-    private String note;
+    protected Integer planningID;
+    protected String name;
+    protected Category category;
+    protected double amount;
+    protected double flow; // how much spent or saved currently
+    protected double progress; 
+    protected String note;
 
     public Planning(){
-        this(null, "", null, 0, 0, "");
+        this(null, null, null, 0, 0, null);
     }
 
-    public Planning(Integer id, String name, Category category, double amount, double spent, String note){
-        this.budgetID = id;
+    public Planning(Integer id, String name, Category category, double amount, double flow, String note){
+        this.planningID = id;
         this.name = name;
         this.category = category;
         this.amount = amount;
-        this.spent = spent;
+        this.flow = flow;
         this.note = note;
 
         updateProgress();
     }
 
-    public Integer getBudgetID() { return this.budgetID; }
-    public void setBudgetID(Integer id) { this.budgetID = id; }
+    public Integer getPlanningID() { return this.planningID; }
+    public void setPlanningID(Integer id) { this.planningID = id; }
 
     public String getName() { return this.name; }
     public void setName(String name) { this.name = name;}
@@ -47,13 +47,15 @@ public abstract class Planning{
     public double getAmount() { return amount;}
     public void setAmount(double amount) { this.amount = amount; }
 
-    public double getSpent() { return spent;}
-    public void setspent(double spent) { this.spent = spent; }
+    public double getFlow() { return flow;}
+    public void setFlow(double flow) { this.flow = flow; }
 
     public double getProgress() { return progress;}
     public void updateProgress() {
+        progress = 0;
+
         if(this.amount > 0){
-            this.progress = (spent / amount) * 100;
+            this.progress = (flow / amount) * 100;
         }
     }
 
@@ -61,11 +63,11 @@ public abstract class Planning{
     public void setNote(String note) { this.note = note; }
 
     public String toString(){
-        return "(ID=" + this.budgetID + 
-                ", name=" + this.name + 
+        return "(ID=" + this.planningID + 
+                ", 'name=" + this.name + "'" + 
                 ", category='" + this.category + "'" +
                 ", amount=" + this.amount +
-                ", spent=" + this.spent +
+                ", flow=" + this.flow +
                 ", progress=" + this.progress + 
                 ", note='" + this.note + "')";
     }

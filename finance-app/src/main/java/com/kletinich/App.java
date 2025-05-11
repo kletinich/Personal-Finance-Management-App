@@ -8,6 +8,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import com.kletinich.database.tables.Budget;
+import com.kletinich.database.tables.Planning;
+
 public class App extends Application {
 
     private static Scene scene;
@@ -29,7 +32,10 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
+        //launch();
+
+        Planning b = new Budget();
+        System.out.println(b);
     }
 
 }
